@@ -1,60 +1,106 @@
 import static org.jreleaser.model.Active.ALWAYS
 
 plugins {
-	id 'java'
-	id 'maven-publish'
-	id 'org.springframework.boot' version '4.0.0'
-	id 'io.spring.dependency-management' version '1.1.7'
-	id 'org.jreleaser' version '1.20.0'
+    id 'java'
+    id 'java-library'
+    id 'maven-publish'
+    id 'org.springframework.boot' version '4.0.0'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.jreleaser' version '1.20.0'
 }
 
 group = 'io.github.pluxurydolo'
-version = '0.0.96'
+version = '0.0.97'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 publishing {
-	publications {
-		release(MavenPublication) {
-			from components.java
-		}
-	}
-	repositories {
-		maven {
-			url = uri layout.buildDirectory.dir('staging-deploy')
-		}
-	}
+    publications {
+        release(MavenPublication) {
+            from components.java
+            pom {
+                name = 'telegram-spring-boot-starter'
+                description = 'Spring Boot Starter for Telegram made for personal use'
+                url = 'https://upload.wikimedia.org/wikipedia/en/c/ce/Randallkennedybook.jpg'
+                developers {
+                    developer {
+                        id = 'pluxurydolo'
+                        name = 'Alexander'
+                    }
+                }
+                scm {
+                    url = 'scm:git:git://github.com/telegram-spring-boot-starter.git'
+                    connection = 'scm:git:git://github.com/telegram-spring-boot-starter.git'
+                    tag = '0.0.96'
+                }
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url = uri layout.buildDirectory.dir('staging-deploy')
+        }
+    }
 }
 
 jreleaser {
-	release {
-		github {
-			skipRelease.set true
+    release {
+        github {
+            skipRelease.set true
             skipTag.set true
-		}
-	}
-	signing {
-		active.set ALWAYS
+        }
+    }
+    signing {
+        active.set ALWAYS
         armored.set true
         verify.set true
-	}
+    }
+    project {
+        inceptionYear.set '2026'
+        author('@pluxurydolo')
+    }
+    deploy {
+        maven {
+            mavenCentral.create('sonatype') {
+                active.set ALWAYS
+                url = 'https://central.sonatype.com/api/v1/publisher'
+                stagingRepository layout.buildDirectory.dir('staging-deploy').get().toString()
+                setAuthorization 'Basic'
+                retryDelay.set 60
+            }
+        }
+    }
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	implementation 'com.github.pengrad:java-telegram-bot-api:9.2.0'
-	testImplementation 'org.springframework.boot:spring-boot-starter-webflux-test'
+    api 'com.github.pengrad:java-telegram-bot-api:9.2.0'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webflux-test'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
