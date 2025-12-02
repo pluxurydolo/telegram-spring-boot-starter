@@ -47,7 +47,7 @@ publishing {
                 scm {
                     url = 'scm:git:git://github.com/telegram-spring-boot-starter.git'
                     connection = 'scm:git:git://github.com/telegram-spring-boot-starter.git'
-                    tag = '0.0.96'
+                    tag = '0.0.97'
                 }
                 licenses {
                     license {
