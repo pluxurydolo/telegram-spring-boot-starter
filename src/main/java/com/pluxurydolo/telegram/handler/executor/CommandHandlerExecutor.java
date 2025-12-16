@@ -1,6 +1,6 @@
 package com.pluxurydolo.telegram.handler.executor;
 
-import com.pluxurydolo.telegram.handler.command.AbstractCommandHandler;
+import com.pluxurydolo.telegram.handler.text.AbstractCommandHandler;
 
 import java.util.List;
 

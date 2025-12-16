@@ -1,4 +1,4 @@
-package com.pluxurydolo.telegram.handler.command;
+package com.pluxurydolo.telegram.handler.text;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pluxurydolo.telegram.dto.UpdateType;

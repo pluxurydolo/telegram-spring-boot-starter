@@ -4,7 +4,7 @@ import com.pluxurydolo.telegram.client.TelegramClient;
 import com.pluxurydolo.telegram.filter.Filter;
 import com.pluxurydolo.telegram.filter.FilterExecutor;
 import com.pluxurydolo.telegram.filter.SenderFilter;
-import com.pluxurydolo.telegram.handler.command.AbstractCommandHandler;
+import com.pluxurydolo.telegram.handler.text.AbstractCommandHandler;
 import com.pluxurydolo.telegram.handler.executor.AbstractHandlerExecutor;
 import com.pluxurydolo.telegram.handler.executor.CommandHandlerExecutor;
 import com.pluxurydolo.telegram.handler.executor.MediaHandlerExecutor;
