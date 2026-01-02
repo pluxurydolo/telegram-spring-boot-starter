@@ -1,14 +1,15 @@
 package com.pluxurydolo.telegram.config;
 
 import com.pluxurydolo.telegram.client.TelegramClient;
+import com.pluxurydolo.telegram.exception.TelegramExceptionHandler;
 import com.pluxurydolo.telegram.filter.Filter;
 import com.pluxurydolo.telegram.filter.FilterExecutor;
 import com.pluxurydolo.telegram.filter.SenderFilter;
-import com.pluxurydolo.telegram.handler.text.AbstractCommandHandler;
 import com.pluxurydolo.telegram.handler.executor.AbstractHandlerExecutor;
 import com.pluxurydolo.telegram.handler.executor.CommandHandlerExecutor;
 import com.pluxurydolo.telegram.handler.executor.MediaHandlerExecutor;
 import com.pluxurydolo.telegram.handler.media.AbstractMediaHandler;
+import com.pluxurydolo.telegram.handler.text.AbstractCommandHandler;
 import com.pluxurydolo.telegram.listener.TelegramUpdatesListener;
 import com.pluxurydolo.telegram.parser.TelegramUpdateParser;
 import com.pluxurydolo.telegram.properties.FilterProperties;
@@ -70,5 +71,10 @@ public class TelegramAutoConfiguration {
     @Bean
     public TelegramUpdateParser telegramUpdateParser() {
         return new TelegramUpdateParser();
+    }
+
+    @Bean
+    public TelegramExceptionHandler telegramExceptionHandler() {
+        return new TelegramExceptionHandler();
     }
 }
