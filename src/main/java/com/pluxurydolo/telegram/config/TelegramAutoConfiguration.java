@@ -61,7 +61,8 @@ public class TelegramAutoConfiguration {
     @ConditionalOnProperty(
         prefix = "telegram.filter",
         name = "enabled",
-        havingValue = "true"
+        havingValue = "true",
+        matchIfMissing = true
     )
     public SenderFilter senderFilter(TelegramUpdateParser telegramUpdateParser) {
         long allowedUserId = filterProperties.allowedUserId();
