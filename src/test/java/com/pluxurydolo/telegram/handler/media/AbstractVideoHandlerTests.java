@@ -1,8 +1,9 @@
-package com.pluxurydolo.telegram.handler.text;
+package com.pluxurydolo.telegram.handler.media;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.Video;
 import com.pluxurydolo.telegram.client.TelegramClient;
 import com.pluxurydolo.telegram.dto.UpdateType;
 import org.junit.jupiter.api.Test;
@@ -11,13 +12,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
-import static com.pluxurydolo.telegram.dto.UpdateType.TEXT;
+import static com.pluxurydolo.telegram.dto.UpdateType.VIDEO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class AbstractTextHandlerTests {
-    private final AbstractTextHandler textHandler = textHandler();
+class AbstractVideoHandlerTests {
+    private final AbstractVideoHandler videoHandler = videoHandler();
 
     @Mock
     private TelegramClient telegramClient;
@@ -28,55 +29,45 @@ class AbstractTextHandlerTests {
     @Mock
     private Message message;
 
+    @Mock
+    private Video video;
+
     @Test
     void testUpdateType() {
-        UpdateType result = textHandler.updateType();
+        UpdateType result = videoHandler.updateType();
 
         assertThat(result)
-            .isEqualTo(TEXT);
+            .isEqualTo(VIDEO);
     }
 
     @Test
     void testCondition() {
         when(update.message())
             .thenReturn(message);
-        when(message.text())
-            .thenReturn("text");
+        when(message.video())
+            .thenReturn(video);
 
-        boolean result = textHandler.condition(update);
+        boolean result = videoHandler.condition(update);
 
         assertThat(result)
             .isTrue();
     }
 
     @Test
-    void testConditionWhenMessageIsCommand() {
+    void testConditionWhenMessageDoesNotHaveVideo() {
         when(update.message())
             .thenReturn(message);
-        when(message.text())
-            .thenReturn("/text");
-
-        boolean result = textHandler.condition(update);
-
-        assertThat(result)
-            .isFalse();
-    }
-
-    @Test
-    void testConditionWhenMessageDoesNotHaveText() {
-        when(update.message())
-            .thenReturn(message);
-        when(message.text())
+        when(message.video())
             .thenReturn(null);
 
-        boolean result = textHandler.condition(update);
+        boolean result = videoHandler.condition(update);
 
         assertThat(result)
             .isFalse();
     }
 
-    private AbstractTextHandler textHandler() {
-        return new AbstractTextHandler(telegramClient) {
+    private AbstractVideoHandler videoHandler() {
+        return new AbstractVideoHandler(telegramClient) {
 
             @Override
             protected Mono<String> doWork(Update tgUpdate) {

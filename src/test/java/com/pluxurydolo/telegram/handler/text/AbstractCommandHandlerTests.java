@@ -77,6 +77,7 @@ class AbstractCommandHandlerTests {
 
     private AbstractCommandHandler commandHandler() {
         return new AbstractCommandHandler(telegramClient) {
+
             @Override
             protected String command() {
                 return "/command";

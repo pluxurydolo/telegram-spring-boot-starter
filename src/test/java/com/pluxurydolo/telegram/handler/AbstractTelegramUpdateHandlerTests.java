@@ -51,6 +51,7 @@ class AbstractTelegramUpdateHandlerTests {
 
     private AbstractTelegramUpdateHandler updateHandler(Mono<String> work) {
         return new AbstractTelegramUpdateHandler(telegramClient) {
+
             @Override
             public boolean condition(Update tgUpdate) {
                 return false;
