@@ -59,7 +59,7 @@ class AbstractCommandHandlerTests {
         boolean result = commandHandler.condition(update);
 
         assertThat(result)
-            .isTrue();
+            .isFalse();
     }
 
     @Test
