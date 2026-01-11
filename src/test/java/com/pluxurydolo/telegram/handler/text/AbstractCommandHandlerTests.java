@@ -13,12 +13,14 @@ import reactor.core.publisher.Mono;
 
 import static com.pluxurydolo.telegram.dto.UpdateType.COMMAND;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AbstractCommandHandlerTests {
-    private static final AbstractCommandHandler COMMAND_HANDLER = commandHandler();
+    private final AbstractCommandHandler commandHandler = commandHandler();
+
+    @Mock
+    private TelegramClient telegramClient;
 
     @Mock
     private Update update;
@@ -28,7 +30,7 @@ class AbstractCommandHandlerTests {
 
     @Test
     void testUpdateType() {
-        UpdateType result = COMMAND_HANDLER.updateType();
+        UpdateType result = commandHandler.updateType();
 
         assertThat(result)
             .isEqualTo(COMMAND);
@@ -41,7 +43,7 @@ class AbstractCommandHandlerTests {
         when(message.text())
             .thenReturn("/command");
 
-        boolean result = COMMAND_HANDLER.condition(update);
+        boolean result = commandHandler.condition(update);
 
         assertThat(result)
             .isTrue();
@@ -54,7 +56,7 @@ class AbstractCommandHandlerTests {
         when(message.text())
             .thenReturn("text");
 
-        boolean result = COMMAND_HANDLER.condition(update);
+        boolean result = commandHandler.condition(update);
 
         assertThat(result)
             .isFalse();
@@ -67,15 +69,13 @@ class AbstractCommandHandlerTests {
         when(message.text())
             .thenReturn(null);
 
-        boolean result = COMMAND_HANDLER.condition(update);
+        boolean result = commandHandler.condition(update);
 
         assertThat(result)
             .isFalse();
     }
 
-    private static AbstractCommandHandler commandHandler() {
-        TelegramClient telegramClient = mock(TelegramClient.class);
-
+    private AbstractCommandHandler commandHandler() {
         return new AbstractCommandHandler(telegramClient) {
             @Override
             protected String command() {
@@ -83,7 +83,7 @@ class AbstractCommandHandlerTests {
             }
 
             @Override
-            protected Mono<String> doWork(Update update) {
+            protected Mono<String> doWork(Update tgUpdate) {
                 return null;
             }
 

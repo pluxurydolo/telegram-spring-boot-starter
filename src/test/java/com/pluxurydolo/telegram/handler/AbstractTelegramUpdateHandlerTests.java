@@ -10,37 +10,55 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 import static reactor.test.StepVerifier.create;
 
 @ExtendWith(MockitoExtension.class)
 class AbstractTelegramUpdateHandlerTests {
-    private static final AbstractTelegramUpdateHandler UPDATE_HANDLER = updateHandler();
+
+    @Mock
+    private TelegramClient telegramClient;
 
     @Mock
     private Update update;
 
     @Test
     void testHandle() {
-        Mono<String> result = UPDATE_HANDLER.handle(update);
+        Mono<String> work = Mono.just("Success");
+        Mono<String> result = updateHandler(work)
+            .handle(update);
+
+        create(result)
+            .expectNext("Success")
+            .verifyComplete();
+    }
+
+    @Test
+    void testHandleWhenExceptionOccurred() {
+        Mono<String> work = Mono.error(new RuntimeException());
+        Mono<String> result = updateHandler(work)
+            .handle(update);
+        when(telegramClient.sendPlainText(anyString(), anyLong(), any()))
+            .thenReturn(Mono.just(""));
 
         create(result)
             .expectNext("")
             .verifyComplete();
     }
 
-    private static AbstractTelegramUpdateHandler updateHandler() {
-        TelegramClient telegramClient = mock(TelegramClient.class);
-
+    private AbstractTelegramUpdateHandler updateHandler(Mono<String> work) {
         return new AbstractTelegramUpdateHandler(telegramClient) {
             @Override
-            public boolean condition(Update update) {
+            public boolean condition(Update tgUpdate) {
                 return false;
             }
 
             @Override
-            protected Mono<String> doWork(Update update) {
-                return Mono.just("");
+            protected Mono<String> doWork(Update tgUpdate) {
+                return work;
             }
 
             @Override
@@ -65,7 +83,7 @@ class AbstractTelegramUpdateHandlerTests {
 
             @Override
             protected Mono<String> onException(Throwable throwable) {
-                return null;
+                return Mono.just("");
             }
         };
     }

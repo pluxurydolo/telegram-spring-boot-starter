@@ -13,12 +13,14 @@ import reactor.core.publisher.Mono;
 
 import static com.pluxurydolo.telegram.dto.UpdateType.TEXT;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AbstractTextHandlerTests {
-    private static final AbstractTextHandler TEXT_HANDLER = textHandler();
+    private final AbstractTextHandler textHandler = textHandler();
+
+    @Mock
+    private TelegramClient telegramClient;
 
     @Mock
     private Update update;
@@ -28,7 +30,7 @@ class AbstractTextHandlerTests {
 
     @Test
     void testUpdateType() {
-        UpdateType result = TEXT_HANDLER.updateType();
+        UpdateType result = textHandler.updateType();
 
         assertThat(result)
             .isEqualTo(TEXT);
@@ -41,7 +43,7 @@ class AbstractTextHandlerTests {
         when(message.text())
             .thenReturn("text");
 
-        boolean result = TEXT_HANDLER.condition(update);
+        boolean result = textHandler.condition(update);
 
         assertThat(result)
             .isTrue();
@@ -54,7 +56,7 @@ class AbstractTextHandlerTests {
         when(message.text())
             .thenReturn("/text");
 
-        boolean result = TEXT_HANDLER.condition(update);
+        boolean result = textHandler.condition(update);
 
         assertThat(result)
             .isFalse();
@@ -67,18 +69,16 @@ class AbstractTextHandlerTests {
         when(message.text())
             .thenReturn(null);
 
-        boolean result = TEXT_HANDLER.condition(update);
+        boolean result = textHandler.condition(update);
 
         assertThat(result)
             .isFalse();
     }
 
-    private static AbstractTextHandler textHandler() {
-        TelegramClient telegramClient = mock(TelegramClient.class);
-
+    private AbstractTextHandler textHandler() {
         return new AbstractTextHandler(telegramClient) {
             @Override
-            protected Mono<String> doWork(Update update) {
+            protected Mono<String> doWork(Update tgUpdate) {
                 return null;
             }
 
