@@ -8,8 +8,10 @@ import com.pluxurydolo.telegram.filter.SenderFilter;
 import com.pluxurydolo.telegram.handler.executor.AbstractHandlerExecutor;
 import com.pluxurydolo.telegram.handler.executor.CommandHandlerExecutor;
 import com.pluxurydolo.telegram.handler.executor.MediaHandlerExecutor;
+import com.pluxurydolo.telegram.handler.executor.TextHandlerExecutor;
 import com.pluxurydolo.telegram.handler.media.AbstractMediaHandler;
 import com.pluxurydolo.telegram.handler.text.AbstractCommandHandler;
+import com.pluxurydolo.telegram.handler.text.AbstractTextHandler;
 import com.pluxurydolo.telegram.listener.TelegramUpdatesListener;
 import com.pluxurydolo.telegram.parser.TelegramUpdateParser;
 import com.pluxurydolo.telegram.properties.FilterProperties;
@@ -50,6 +52,11 @@ public class TelegramAutoConfiguration {
     @Bean
     public MediaHandlerExecutor mediaHandlerExecutor(List<AbstractMediaHandler> handlers) {
         return new MediaHandlerExecutor(handlers);
+    }
+
+    @Bean
+    public TextHandlerExecutor textHandlerExecutor(List<AbstractTextHandler> handlers) {
+        return new TextHandlerExecutor(handlers);
     }
 
     @Bean

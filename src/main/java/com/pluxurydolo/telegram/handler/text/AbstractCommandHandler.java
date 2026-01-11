@@ -15,16 +15,16 @@ public abstract class AbstractCommandHandler extends AbstractTelegramUpdateHandl
     }
 
     @Override
+    public UpdateType updateType() {
+        return COMMAND;
+    }
+
+    @Override
     public boolean condition(Update update) {
         Optional<String> text = Optional.ofNullable(update.message().text());
 
         return text.map(it -> it.startsWith(command()))
             .orElse(false);
-    }
-
-    @Override
-    public UpdateType updateType() {
-        return COMMAND;
     }
 
     protected abstract String command();
