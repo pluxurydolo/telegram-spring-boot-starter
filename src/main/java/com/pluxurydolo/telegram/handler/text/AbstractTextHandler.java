@@ -5,6 +5,8 @@ import com.pluxurydolo.telegram.client.TelegramClient;
 import com.pluxurydolo.telegram.dto.UpdateType;
 import com.pluxurydolo.telegram.handler.AbstractTelegramUpdateHandler;
 
+import java.util.Optional;
+
 import static com.pluxurydolo.telegram.dto.UpdateType.TEXT;
 
 public abstract class AbstractTextHandler extends AbstractTelegramUpdateHandler {
@@ -13,12 +15,15 @@ public abstract class AbstractTextHandler extends AbstractTelegramUpdateHandler 
     }
 
     @Override
-    public boolean condition(Update update) {
-        return true;
+    public UpdateType updateType() {
+        return TEXT;
     }
 
     @Override
-    public UpdateType updateType() {
-        return TEXT;
+    public boolean condition(Update update) {
+        Optional<String> text = Optional.ofNullable(update.message().text());
+
+        return text.map(it -> !it.startsWith("/"))
+            .orElse(false);
     }
 }
