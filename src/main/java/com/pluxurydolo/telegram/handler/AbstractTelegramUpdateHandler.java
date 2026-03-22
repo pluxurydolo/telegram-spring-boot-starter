@@ -19,7 +19,7 @@ public abstract class AbstractTelegramUpdateHandler {
 
     public Mono<String> handle(Update update) {
         return doWork(update)
-            .doOnSuccess(it -> LOGGER.info("zxsf Сообщение типа {} успешно обработано", updateType()))
+            .doOnSuccess(_ -> LOGGER.info("zxsf Сообщение типа {} успешно обработано", updateType()))
             .onErrorResume(this::handleException);
     }
 
@@ -27,7 +27,7 @@ public abstract class AbstractTelegramUpdateHandler {
         LOGGER.error("wlrf Произошла ошибка при обработке сообщения типа {}", updateType());
 
         return onException(throwable)
-            .flatMap(it -> telegramClient.sendPlainText(failMessage(), recepientId(), telegramBot()));
+            .flatMap(_ -> telegramClient.sendPlainText(failMessage(), recepientId(), telegramBot()));
     }
 
     public abstract boolean condition(Update update);
