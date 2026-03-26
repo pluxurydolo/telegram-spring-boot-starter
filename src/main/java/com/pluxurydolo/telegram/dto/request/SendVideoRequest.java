@@ -4,8 +4,8 @@ import com.pengrad.telegrambot.TelegramBot;
 
 public record SendVideoRequest(
     byte[] video,
-    Long channelId,
     String caption,
+    Long channelId,
     TelegramBot bot
 ) {
 }

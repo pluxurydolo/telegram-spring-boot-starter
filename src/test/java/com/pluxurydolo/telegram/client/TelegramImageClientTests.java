@@ -2,7 +2,7 @@ package com.pluxurydolo.telegram.client;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.response.SendResponse;
-import com.pluxurydolo.telegram.dto.request.SendVideoRequest;
+import com.pluxurydolo.telegram.dto.request.SendImageRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -14,8 +14,8 @@ import static org.mockito.Mockito.when;
 import static reactor.test.StepVerifier.create;
 
 @ExtendWith(MockitoExtension.class)
-class TelegramVideoClientTests {
-    private static final TelegramVideoClient CLIENT = new TelegramVideoClient();
+class TelegramImageClientTests {
+    private static final TelegramImageClient CLIENT = new TelegramImageClient();
 
     @Mock
     private TelegramBot telegramBot;
@@ -24,21 +24,21 @@ class TelegramVideoClientTests {
     private SendResponse sendResponse;
 
     @Test
-    void testSendVideo() {
+    void testSendImage() {
         when(telegramBot.execute(any()))
             .thenReturn(sendResponse);
 
-        Mono<String> result = CLIENT.sendVideo(sendVideoRequest(telegramBot));
+        Mono<String> result = CLIENT.sendImage(sendImageRequest(telegramBot));
 
         create(result)
             .expectNext("caption")
             .verifyComplete();
     }
 
-    private static SendVideoRequest sendVideoRequest(TelegramBot telegramBot) {
-        byte[] video = {};
+    private static SendImageRequest sendImageRequest(TelegramBot telegramBot) {
+        byte[] image = {};
         String caption = "caption";
-        long channelId = 1L;
-        return new SendVideoRequest(video, caption, channelId, telegramBot);
+        long userId = 1L;
+        return new SendImageRequest(image, caption, userId, telegramBot);
     }
 }
