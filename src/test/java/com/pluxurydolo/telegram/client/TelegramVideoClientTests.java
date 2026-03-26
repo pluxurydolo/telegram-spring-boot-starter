@@ -2,7 +2,7 @@ package com.pluxurydolo.telegram.client;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.response.SendResponse;
-import com.pluxurydolo.telegram.dto.request.SendTextRequest;
+import com.pluxurydolo.telegram.dto.request.SendVideoRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -14,8 +14,8 @@ import static org.mockito.Mockito.when;
 import static reactor.test.StepVerifier.create;
 
 @ExtendWith(MockitoExtension.class)
-class TelegramTextClientTests {
-    private static final TelegramTextClient CLIENT = new TelegramTextClient(123L);
+class TelegramVideoClientTests {
+    private static final TelegramVideoClient CLIENT = new TelegramVideoClient();
 
     @Mock
     private TelegramBot telegramBot;
@@ -24,19 +24,21 @@ class TelegramTextClientTests {
     private SendResponse sendResponse;
 
     @Test
-    void testSendText() {
+    void testSendVideo() {
         when(telegramBot.execute(any()))
             .thenReturn(sendResponse);
 
-        Mono<String> result = CLIENT.sendText(sendTextRequest(telegramBot));
+        Mono<String> result = CLIENT.sendVideo(sendVideoRequest(telegramBot));
 
         create(result)
-            .expectNext("text")
+            .expectNext("caption")
             .verifyComplete();
     }
 
-    private static SendTextRequest sendTextRequest(TelegramBot telegramBot) {
-        String text = "text";
-        return new SendTextRequest(text, telegramBot);
+    private static SendVideoRequest sendVideoRequest(TelegramBot telegramBot) {
+        byte[] video = {};
+        long channelId = 1L;
+        String caption = "caption";
+        return new SendVideoRequest(video, channelId, caption, telegramBot);
     }
 }

@@ -23,7 +23,7 @@ public class TelegramTextClient {
             .parseMode(HTML);
 
         return Mono.fromCallable(() -> bot.execute(request))
-            .thenReturn(String.valueOf(userId))
+            .thenReturn(text)
             .subscribeOn(Schedulers.boundedElastic());
     }
 }
