@@ -1,14 +1,14 @@
 package com.pluxurydolo.telegram.handler.media;
 
 import com.pengrad.telegrambot.model.Update;
+import com.pluxurydolo.telegram.client.TelegramTextClient;
 import com.pluxurydolo.telegram.dto.UpdateType;
-import com.pluxurydolo.telegram.client.TelegramClient;
 
 import static com.pluxurydolo.telegram.dto.UpdateType.PIC;
 
 public abstract class AbstractPicHandler extends AbstractMediaHandler {
-    protected AbstractPicHandler(TelegramClient telegramClient) {
-        super(telegramClient);
+    protected AbstractPicHandler(TelegramTextClient telegramTextClient) {
+        super(telegramTextClient);
     }
 
     @Override

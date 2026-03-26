@@ -1,16 +1,16 @@
 package com.pluxurydolo.telegram.handler.executor;
 
 import com.pengrad.telegrambot.model.Update;
-import com.pluxurydolo.telegram.handler.AbstractTelegramUpdateHandler;
+import com.pluxurydolo.telegram.handler.AbstractUpdateHandler;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 public abstract class AbstractHandlerExecutor {
-    private final List<? extends AbstractTelegramUpdateHandler> handlers;
+    private final List<? extends AbstractUpdateHandler> handlers;
 
-    protected AbstractHandlerExecutor(List<? extends AbstractTelegramUpdateHandler> handlers) {
+    protected AbstractHandlerExecutor(List<? extends AbstractUpdateHandler> handlers) {
         this.handlers = handlers;
     }
 

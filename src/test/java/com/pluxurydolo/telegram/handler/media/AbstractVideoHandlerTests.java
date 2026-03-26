@@ -4,7 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.Video;
-import com.pluxurydolo.telegram.client.TelegramClient;
+import com.pluxurydolo.telegram.client.TelegramTextClient;
 import com.pluxurydolo.telegram.dto.UpdateType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +21,7 @@ class AbstractVideoHandlerTests {
     private final AbstractVideoHandler videoHandler = videoHandler();
 
     @Mock
-    private TelegramClient telegramClient;
+    private TelegramTextClient telegramTextClient;
 
     @Mock
     private Update update;
@@ -67,30 +67,25 @@ class AbstractVideoHandlerTests {
     }
 
     private AbstractVideoHandler videoHandler() {
-        return new AbstractVideoHandler(telegramClient) {
+        return new AbstractVideoHandler(telegramTextClient) {
 
             @Override
-            protected Mono<String> doWork(Update tgUpdate) {
+            public Mono<String> doWork(Update tgUpdate) {
                 return null;
             }
 
             @Override
-            protected String failMessage() {
+            public String failMessage() {
                 return "";
             }
 
             @Override
-            protected TelegramBot telegramBot() {
+            public TelegramBot telegramBot() {
                 return null;
             }
 
             @Override
-            protected long recepientId() {
-                return 0;
-            }
-
-            @Override
-            protected Mono<String> onException(Throwable throwable) {
+            public Mono<String> onException(Throwable throwable) {
                 return null;
             }
         };

@@ -1,17 +1,17 @@
 package com.pluxurydolo.telegram.handler.text;
 
 import com.pengrad.telegrambot.model.Update;
+import com.pluxurydolo.telegram.client.TelegramTextClient;
 import com.pluxurydolo.telegram.dto.UpdateType;
-import com.pluxurydolo.telegram.client.TelegramClient;
-import com.pluxurydolo.telegram.handler.AbstractTelegramUpdateHandler;
+import com.pluxurydolo.telegram.handler.AbstractUpdateHandler;
 
 import java.util.Optional;
 
 import static com.pluxurydolo.telegram.dto.UpdateType.COMMAND;
 
-public abstract class AbstractCommandHandler extends AbstractTelegramUpdateHandler {
-    protected AbstractCommandHandler(TelegramClient telegramClient) {
-        super(telegramClient);
+public abstract class AbstractCommandHandler extends AbstractUpdateHandler {
+    protected AbstractCommandHandler(TelegramTextClient telegramTextClient) {
+        super(telegramTextClient);
     }
 
     @Override

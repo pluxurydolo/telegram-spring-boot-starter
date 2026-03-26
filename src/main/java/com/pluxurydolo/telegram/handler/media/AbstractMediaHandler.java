@@ -1,10 +1,10 @@
 package com.pluxurydolo.telegram.handler.media;
 
-import com.pluxurydolo.telegram.client.TelegramClient;
-import com.pluxurydolo.telegram.handler.AbstractTelegramUpdateHandler;
+import com.pluxurydolo.telegram.client.TelegramTextClient;
+import com.pluxurydolo.telegram.handler.AbstractUpdateHandler;
 
-public abstract class AbstractMediaHandler extends AbstractTelegramUpdateHandler {
-    protected AbstractMediaHandler(TelegramClient telegramClient) {
-        super(telegramClient);
+public abstract class AbstractMediaHandler extends AbstractUpdateHandler {
+    protected AbstractMediaHandler(TelegramTextClient telegramTextClient) {
+        super(telegramTextClient);
     }
 }

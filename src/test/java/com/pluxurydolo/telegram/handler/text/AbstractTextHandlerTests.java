@@ -3,7 +3,7 @@ package com.pluxurydolo.telegram.handler.text;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
-import com.pluxurydolo.telegram.client.TelegramClient;
+import com.pluxurydolo.telegram.client.TelegramTextClient;
 import com.pluxurydolo.telegram.dto.UpdateType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +20,7 @@ class AbstractTextHandlerTests {
     private final AbstractTextHandler textHandler = textHandler();
 
     @Mock
-    private TelegramClient telegramClient;
+    private TelegramTextClient telegramTextClient;
 
     @Mock
     private Update update;
@@ -76,30 +76,25 @@ class AbstractTextHandlerTests {
     }
 
     private AbstractTextHandler textHandler() {
-        return new AbstractTextHandler(telegramClient) {
+        return new AbstractTextHandler(telegramTextClient) {
 
             @Override
-            protected Mono<String> doWork(Update tgUpdate) {
+            public Mono<String> doWork(Update tgUpdate) {
                 return null;
             }
 
             @Override
-            protected String failMessage() {
+            public String failMessage() {
                 return "";
             }
 
             @Override
-            protected TelegramBot telegramBot() {
+            public TelegramBot telegramBot() {
                 return null;
             }
 
             @Override
-            protected long recepientId() {
-                return 0;
-            }
-
-            @Override
-            protected Mono<String> onException(Throwable throwable) {
+            public Mono<String> onException(Throwable throwable) {
                 return null;
             }
         };

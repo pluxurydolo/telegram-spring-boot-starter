@@ -2,7 +2,7 @@ package com.pluxurydolo.telegram.handler;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
-import com.pluxurydolo.telegram.client.TelegramClient;
+import com.pluxurydolo.telegram.client.TelegramTextClient;
 import com.pluxurydolo.telegram.dto.UpdateType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,16 +11,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static reactor.test.StepVerifier.create;
 
 @ExtendWith(MockitoExtension.class)
-class AbstractTelegramUpdateHandlerTests {
+class AbstractUpdateHandlerTests {
 
     @Mock
-    private TelegramClient telegramClient;
+    private TelegramTextClient telegramTextClient;
 
     @Mock
     private Update update;
@@ -28,6 +26,7 @@ class AbstractTelegramUpdateHandlerTests {
     @Test
     void testHandle() {
         Mono<String> work = Mono.just("Success");
+
         Mono<String> result = updateHandler(work)
             .handle(update);
 
@@ -39,18 +38,19 @@ class AbstractTelegramUpdateHandlerTests {
     @Test
     void testHandleWhenExceptionOccurred() {
         Mono<String> work = Mono.error(new RuntimeException());
+        when(telegramTextClient.sendText(any()))
+            .thenReturn(Mono.just(""));
+
         Mono<String> result = updateHandler(work)
             .handle(update);
-        when(telegramClient.sendPlainText(anyString(), anyLong(), any()))
-            .thenReturn(Mono.just(""));
 
         create(result)
             .expectNext("")
             .verifyComplete();
     }
 
-    private AbstractTelegramUpdateHandler updateHandler(Mono<String> work) {
-        return new AbstractTelegramUpdateHandler(telegramClient) {
+    private AbstractUpdateHandler updateHandler(Mono<String> work) {
+        return new AbstractUpdateHandler(telegramTextClient) {
 
             @Override
             public boolean condition(Update tgUpdate) {
@@ -75,11 +75,6 @@ class AbstractTelegramUpdateHandlerTests {
             @Override
             protected TelegramBot telegramBot() {
                 return null;
-            }
-
-            @Override
-            protected long recepientId() {
-                return 0;
             }
 
             @Override

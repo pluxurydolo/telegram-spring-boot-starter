@@ -4,7 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.PhotoSize;
 import com.pengrad.telegrambot.model.Update;
-import com.pluxurydolo.telegram.client.TelegramClient;
+import com.pluxurydolo.telegram.client.TelegramTextClient;
 import com.pluxurydolo.telegram.dto.UpdateType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +21,7 @@ class AbstractPicHandlerTests {
     private final AbstractPicHandler picHandler = picHandler();
 
     @Mock
-    private TelegramClient telegramClient;
+    private TelegramTextClient telegramTextClient;
 
     @Mock
     private Update update;
@@ -67,30 +67,25 @@ class AbstractPicHandlerTests {
     }
 
     private AbstractPicHandler picHandler() {
-        return new AbstractPicHandler(telegramClient) {
+        return new AbstractPicHandler(telegramTextClient) {
 
             @Override
-            protected Mono<String> doWork(Update update) {
+            public Mono<String> doWork(Update update) {
                 return null;
             }
 
             @Override
-            protected String failMessage() {
+            public String failMessage() {
                 return "";
             }
 
             @Override
-            protected TelegramBot telegramBot() {
+            public TelegramBot telegramBot() {
                 return null;
             }
 
             @Override
-            protected long recepientId() {
-                return 0;
-            }
-
-            @Override
-            protected Mono<String> onException(Throwable throwable) {
+            public Mono<String> onException(Throwable throwable) {
                 return null;
             }
         };

@@ -2,19 +2,20 @@ package com.pluxurydolo.telegram.handler;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
+import com.pluxurydolo.telegram.client.TelegramTextClient;
 import com.pluxurydolo.telegram.dto.UpdateType;
-import com.pluxurydolo.telegram.client.TelegramClient;
+import com.pluxurydolo.telegram.dto.request.SendTextRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-public abstract class AbstractTelegramUpdateHandler {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTelegramUpdateHandler.class);
+public abstract class AbstractUpdateHandler {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractUpdateHandler.class);
 
-    private final TelegramClient telegramClient;
+    private final TelegramTextClient telegramTextClient;
 
-    protected AbstractTelegramUpdateHandler(TelegramClient telegramClient) {
-        this.telegramClient = telegramClient;
+    protected AbstractUpdateHandler(TelegramTextClient telegramTextClient) {
+        this.telegramTextClient = telegramTextClient;
     }
 
     public Mono<String> handle(Update update) {
@@ -26,8 +27,12 @@ public abstract class AbstractTelegramUpdateHandler {
     private Mono<String> handleException(Throwable throwable) {
         LOGGER.error("wlrf Произошла ошибка при обработке сообщения типа {}", updateType());
 
+        String text = failMessage();
+        TelegramBot telegramBot = telegramBot();
+        SendTextRequest sendTextRequest = new SendTextRequest(text, telegramBot);
+
         return onException(throwable)
-            .flatMap(_ -> telegramClient.sendPlainText(failMessage(), recepientId(), telegramBot()));
+            .flatMap(_ -> telegramTextClient.sendText(sendTextRequest));
     }
 
     public abstract boolean condition(Update update);
@@ -39,8 +44,6 @@ public abstract class AbstractTelegramUpdateHandler {
     protected abstract String failMessage();
 
     protected abstract TelegramBot telegramBot();
-
-    protected abstract long recepientId();
 
     protected abstract Mono<String> onException(Throwable throwable);
 }
