@@ -3,11 +3,10 @@ package com.pluxurydolo.telegram.filter;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.User;
-import com.pluxurydolo.telegram.application.TestApplication;
+import com.pluxurydolo.telegram.TestApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 import reactor.core.publisher.Mono;
 
 import static org.mockito.Mockito.mock;
@@ -16,7 +15,6 @@ import static org.springframework.test.util.ReflectionTestUtils.setField;
 import static reactor.test.StepVerifier.create;
 
 @SpringBootTest(classes = TestApplication.class)
-@TestPropertySource(properties = "telegram.allowed-user-id=123")
 class FilterExecutorTests {
 
     @Autowired
