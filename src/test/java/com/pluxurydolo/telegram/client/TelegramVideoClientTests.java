@@ -15,7 +15,7 @@ import static reactor.test.StepVerifier.create;
 
 @ExtendWith(MockitoExtension.class)
 class TelegramVideoClientTests {
-    private static final TelegramVideoClient CLIENT = new TelegramVideoClient();
+    private static final TelegramVideoClient CLIENT = new TelegramVideoClient(1L);
 
     @Mock
     private TelegramBot telegramBot;
@@ -38,7 +38,6 @@ class TelegramVideoClientTests {
     private static SendVideoRequest sendVideoRequest(TelegramBot telegramBot) {
         byte[] video = {};
         String caption = "caption";
-        long channelId = 1L;
-        return new SendVideoRequest(video, caption, channelId, telegramBot);
+        return new SendVideoRequest(video, caption, telegramBot);
     }
 }

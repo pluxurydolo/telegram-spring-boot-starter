@@ -7,10 +7,15 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 public class TelegramImageClient {
+    private final long userId;
+
+    public TelegramImageClient(long userId) {
+        this.userId = userId;
+    }
+
     public Mono<String> sendImage(SendImageRequest sendImageRequest) {
         byte[] image = sendImageRequest.image();
         String caption = sendImageRequest.caption();
-        long userId = sendImageRequest.userId();
         TelegramBot bot = sendImageRequest.bot();
 
         SendPhoto request = new SendPhoto(userId, image)

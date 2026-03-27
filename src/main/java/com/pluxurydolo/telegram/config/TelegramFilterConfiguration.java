@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 @Configuration
-public class FilterConfiguration {
+public class TelegramFilterConfiguration {
 
     @Bean
     public FilterExecutor filterExecutor(List<Filter> filters) {

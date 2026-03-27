@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ClientConfiguration {
+public class TelegramClientConfiguration {
 
     @Bean
     public TelegramTextClient telegramTextClient(TelegramProperties telegramProperties) {
@@ -19,13 +19,15 @@ public class ClientConfiguration {
     }
 
     @Bean
-    public TelegramImageClient telegramImageClient() {
-        return new TelegramImageClient();
+    public TelegramImageClient telegramImageClient(TelegramProperties telegramProperties) {
+        long userId = telegramProperties.allowedUserId();
+        return new TelegramImageClient(userId);
     }
 
     @Bean
-    public TelegramVideoClient telegramVideoClient() {
-        return new TelegramVideoClient();
+    public TelegramVideoClient telegramVideoClient(TelegramProperties telegramProperties) {
+        long channelId = telegramProperties.channelId();
+        return new TelegramVideoClient(channelId);
     }
 
     @Bean

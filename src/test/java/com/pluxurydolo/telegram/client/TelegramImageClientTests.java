@@ -15,7 +15,7 @@ import static reactor.test.StepVerifier.create;
 
 @ExtendWith(MockitoExtension.class)
 class TelegramImageClientTests {
-    private static final TelegramImageClient CLIENT = new TelegramImageClient();
+    private static final TelegramImageClient CLIENT = new TelegramImageClient(1L);
 
     @Mock
     private TelegramBot telegramBot;
@@ -38,7 +38,6 @@ class TelegramImageClientTests {
     private static SendImageRequest sendImageRequest(TelegramBot telegramBot) {
         byte[] image = {};
         String caption = "caption";
-        long userId = 1L;
-        return new SendImageRequest(image, caption, userId, telegramBot);
+        return new SendImageRequest(image, caption, telegramBot);
     }
 }

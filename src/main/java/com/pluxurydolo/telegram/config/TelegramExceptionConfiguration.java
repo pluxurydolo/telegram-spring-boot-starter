@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ExceptionConfiguration {
+public class TelegramExceptionConfiguration {
 
     @Bean
     public TelegramExceptionHandler telegramExceptionHandler() {

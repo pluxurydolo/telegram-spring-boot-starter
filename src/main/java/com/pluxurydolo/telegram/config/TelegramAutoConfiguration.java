@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Import;
 @ConditionalOnProperty(prefix = "telegram", name = "enabled", havingValue = "true")
 @EnableConfigurationProperties(TelegramProperties.class)
 @Import({
-    ClientConfiguration.class,
-    UpdateConfiguration.class,
-    FilterConfiguration.class,
-    ExceptionConfiguration.class
+    TelegramClientConfiguration.class,
+    TelegramUpdateConfiguration.class,
+    TelegramFilterConfiguration.class,
+    TelegramExceptionConfiguration.class
 })
 public class TelegramAutoConfiguration {
 }
