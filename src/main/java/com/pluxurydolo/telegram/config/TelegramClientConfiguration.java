@@ -20,8 +20,8 @@ public class TelegramClientConfiguration {
 
     @Bean
     public TelegramImageClient telegramImageClient(TelegramProperties telegramProperties) {
-        long userId = telegramProperties.allowedUserId();
-        return new TelegramImageClient(userId);
+        long channelId = telegramProperties.channelId();
+        return new TelegramImageClient(channelId);
     }
 
     @Bean
