@@ -20,12 +20,12 @@ public abstract class AbstractUpdateHandler {
 
     public Mono<String> handle(Update update) {
         return doWork(update)
-            .doOnSuccess(_ -> LOGGER.info("zxsf Сообщение типа {} успешно обработано", updateType()))
+            .doOnSuccess(_ -> LOGGER.info("zxsf [telegram-starter] Сообщение типа {} успешно обработано", updateType()))
             .onErrorResume(this::handleException);
     }
 
     private Mono<String> handleException(Throwable throwable) {
-        LOGGER.error("wlrf Произошла ошибка при обработке сообщения типа {}", updateType());
+        LOGGER.error("wlrf [telegram-starter] Произошла ошибка при обработке сообщения типа {}", updateType());
 
         String text = failMessage();
         TelegramBot telegramBot = telegramBot();

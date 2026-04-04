@@ -16,9 +16,9 @@ public class TelegramExceptionHandler implements ExceptionHandler {
         if (baseResponse != null) {
             int errorCode = baseResponse.errorCode();
             String description = baseResponse.description();
-            LOGGER.error("uyzg Возникло исключение Telegram API: {} {}", errorCode, description);
+            LOGGER.error("uyzg [telegram-starter] Возникло исключение Telegram API: {} {}", errorCode, description);
         } else {
-            LOGGER.error("idyu Возникло неизвестное исключение Telegram API");
+            LOGGER.error("idyu [telegram-starter] Возникло неизвестное исключение Telegram API");
         }
     }
 }

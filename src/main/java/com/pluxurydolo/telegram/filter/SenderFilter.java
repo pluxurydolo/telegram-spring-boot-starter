@@ -19,12 +19,12 @@ public class SenderFilter implements Filter {
     @Override
     public boolean doFilter(Update update) {
         long senderId = telegramUpdateParser.getSenderId(update);
-        LOGGER.info("mknh Telegram ID отправителя={}\nРазрешенный Telegram ID={}", senderId, allowedUserId);
+        LOGGER.info("mknh [telegram-starter] Telegram ID отправителя={}\nРазрешенный Telegram ID={}", senderId, allowedUserId);
 
         boolean result = senderId == allowedUserId;
 
         if (!result) {
-            LOGGER.warn("wwpe Запрос не будет обработан, так как пришел от запрещенного Telegram ID");
+            LOGGER.warn("wwpe [telegram-starter] Запрос не будет обработан, так как пришел от запрещенного Telegram ID");
         }
 
         return result;

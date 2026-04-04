@@ -41,7 +41,7 @@ public class TelegramUpdatesListener implements UpdatesListener {
         long senderId = message.from().id();
         String text = message.text();
 
-        LOGGER.info("phyb ID отправителя={} Текст сообщения={}", senderId, text);
+        LOGGER.info("phyb [telegram-starter] ID отправителя={} Текст сообщения={}", senderId, text);
 
         return Flux.fromIterable(executors)
             .flatMap(executor -> executor.execute(update))
