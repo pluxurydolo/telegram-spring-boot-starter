@@ -1,9 +1,8 @@
 package com.pluxurydolo.telegram.util;
 
-import com.pluxurydolo.telegram.TestApplication;
+import com.pluxurydolo.telegram.base.AbstractIntegrationTests;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import reactor.core.publisher.Mono;
 
 import java.net.UnknownHostException;
@@ -11,8 +10,7 @@ import java.net.UnknownHostException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static reactor.test.StepVerifier.create;
 
-@SpringBootTest(classes = TestApplication.class)
-class MediaRetrieverTests {
+class MediaRetrieverIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
     private MediaRetriever mediaRetriever;

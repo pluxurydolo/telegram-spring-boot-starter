@@ -3,10 +3,9 @@ package com.pluxurydolo.telegram.filter;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.User;
-import com.pluxurydolo.telegram.TestApplication;
+import com.pluxurydolo.telegram.base.AbstractIntegrationTests;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import reactor.core.publisher.Mono;
 
 import static org.mockito.Mockito.mock;
@@ -14,8 +13,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.util.ReflectionTestUtils.setField;
 import static reactor.test.StepVerifier.create;
 
-@SpringBootTest(classes = TestApplication.class)
-class FilterExecutorTests {
+class FilterExecutorIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
     private FilterExecutor filterExecutor;
@@ -40,14 +38,14 @@ class FilterExecutorTests {
 
     private static Update textUpdate(long senderId) {
         Update update = new Update();
-        setField(update, "message", textMessage(senderId, "text"));
+        setField(update, "message", textMessage(senderId));
         return update;
     }
 
-    private static Message textMessage(long senderId, String text) {
+    private static Message textMessage(long senderId) {
         Message message = new Message();
         setField(message, "from", user(senderId));
-        setField(message, "text", text);
+        setField(message, "text", "text");
         return message;
     }
 
