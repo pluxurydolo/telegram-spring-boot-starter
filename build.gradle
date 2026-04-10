@@ -111,7 +111,7 @@ dependencies {
     api "com.github.pengrad:java-telegram-bot-api:$telegramBotApiVersion"
 
     implementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
-    implementation "org.springframework.boot:spring-boot-starter-webflux:$springBootVersion"
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
-    testImplementation "org.springframework.boot:spring-boot-starter-webflux-test:$springBootVersion"
+    testImplementation 'org.springframework.boot:spring-boot-starter-webflux-test'
 }
