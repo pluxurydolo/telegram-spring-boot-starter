@@ -22,7 +22,7 @@ public abstract class AbstractUpdateHandler {
     }
 
     public Mono<String> handle(Update update) {
-        return perUserRateLimiter.withRateLimit(update, doWork(update))
+        return perUserRateLimiter.withRateLimit(update, telegramBot(), doWork(update))
             .doOnSuccess(_ -> LOGGER.info("zxsf [telegram-starter] Сообщение типа {} успешно обработано", updateType()))
             .onErrorResume(this::handleException);
     }
@@ -35,7 +35,8 @@ public abstract class AbstractUpdateHandler {
         SendTextRequest sendTextRequest = new SendTextRequest(text, telegramBot);
 
         return onException(throwable)
-            .flatMap(_ -> telegramTextClient.sendText(sendTextRequest));
+            .flatMap(_ -> telegramTextClient.sendText(sendTextRequest))
+            .thenReturn(text);
     }
 
     public abstract boolean condition(Update update);

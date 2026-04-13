@@ -13,15 +13,15 @@ public class TelegramImageClient {
         this.channelId = channelId;
     }
 
-    public Mono<String> sendImage(SendImageRequest sendImageRequest) {
-        byte[] image = sendImageRequest.image();
-        String caption = sendImageRequest.caption();
-        TelegramBot bot = sendImageRequest.bot();
+    public Mono<String> sendImage(SendImageRequest request) {
+        byte[] image = request.image();
+        String caption = request.caption();
+        TelegramBot bot = request.bot();
 
-        SendPhoto request = new SendPhoto(channelId, image)
+        SendPhoto sendPhoto = new SendPhoto(channelId, image)
             .caption(caption);
 
-        return Mono.fromCallable(() -> bot.execute(request))
+        return Mono.fromCallable(() -> bot.execute(sendPhoto))
             .thenReturn(caption)
             .subscribeOn(Schedulers.boundedElastic());
     }

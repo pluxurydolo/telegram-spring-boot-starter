@@ -16,13 +16,13 @@ public class TelegramFileClient {
         this.fileUri = fileUri;
     }
 
-    public Mono<byte[]> getFile(GetFileRequest getFileRequest) {
-        String fileId = getFileRequest.fileId();
-        TelegramBot bot = getFileRequest.bot();
+    public Mono<byte[]> getFile(GetFileRequest request) {
+        String fileId = request.fileId();
+        TelegramBot bot = request.bot();
 
-        GetFile request = new GetFile(fileId);
+        GetFile getFile = new GetFile(fileId);
 
-        return Mono.fromCallable(() -> bot.execute(request))
+        return Mono.fromCallable(() -> bot.execute(getFile))
             .map(response -> response.file().filePath())
             .map(filePath -> String.format(fileUri, filePath))
             .flatMap(mediaRetriever::retrieve)

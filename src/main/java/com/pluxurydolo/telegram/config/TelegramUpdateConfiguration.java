@@ -1,5 +1,6 @@
 package com.pluxurydolo.telegram.config;
 
+import com.pluxurydolo.telegram.client.TelegramTextClient;
 import com.pluxurydolo.telegram.filter.FilterExecutor;
 import com.pluxurydolo.telegram.handler.executor.AbstractHandlerExecutor;
 import com.pluxurydolo.telegram.handler.executor.CommandHandlerExecutor;
@@ -29,8 +30,11 @@ public class TelegramUpdateConfiguration {
     }
 
     @Bean
-    public PerUserRateLimiter perUserRateLimiter(TelegramRateLimitProperties telegramRateLimitProperties) {
-        return new PerUserRateLimiter(telegramRateLimitProperties);
+    public PerUserRateLimiter perUserRateLimiter(
+        TelegramRateLimitProperties telegramRateLimitProperties,
+        TelegramTextClient telegramTextClient
+    ) {
+        return new PerUserRateLimiter(telegramRateLimitProperties, telegramTextClient);
     }
 
     @Bean

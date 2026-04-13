@@ -13,15 +13,15 @@ public class TelegramVideoClient {
         this.channelId = channelId;
     }
 
-    public Mono<String> sendVideo(SendVideoRequest sendVideoRequest) {
-        byte[] video = sendVideoRequest.video();
-        String caption = sendVideoRequest.caption();
-        TelegramBot bot = sendVideoRequest.bot();
+    public Mono<String> sendVideo(SendVideoRequest request) {
+        byte[] video = request.video();
+        String caption = request.caption();
+        TelegramBot bot = request.bot();
 
-        SendVideo request = new SendVideo(channelId, video)
+        SendVideo sendVideo = new SendVideo(channelId, video)
             .caption(caption);
 
-        return Mono.fromCallable(() -> bot.execute(request))
+        return Mono.fromCallable(() -> bot.execute(sendVideo))
             .thenReturn(caption)
             .subscribeOn(Schedulers.boundedElastic());
     }
