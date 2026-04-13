@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static reactor.test.StepVerifier.create;
 
@@ -33,6 +34,18 @@ class TelegramVideoClientTests {
         create(result)
             .expectNext("caption")
             .verifyComplete();
+    }
+
+    @Test
+    void testSendVideoWhenExceptionOccurred() {
+        doThrow(RuntimeException.class)
+            .when(telegramBot).execute(any());
+
+        Mono<String> result = CLIENT.sendVideo(sendVideoRequest(telegramBot));
+
+        create(result)
+            .expectError(RuntimeException.class)
+            .verify();
     }
 
     private static SendVideoRequest sendVideoRequest(TelegramBot telegramBot) {

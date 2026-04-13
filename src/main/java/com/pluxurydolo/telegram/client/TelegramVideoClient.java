@@ -3,10 +3,15 @@ package com.pluxurydolo.telegram.client;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendVideo;
 import com.pluxurydolo.telegram.dto.request.SendVideoRequest;
+import com.pluxurydolo.telegram.exception.SendVideoException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 public class TelegramVideoClient {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TelegramVideoClient.class);
+
     private final long channelId;
 
     public TelegramVideoClient(long channelId) {
@@ -23,6 +28,10 @@ public class TelegramVideoClient {
 
         return Mono.fromCallable(() -> bot.execute(sendVideo))
             .thenReturn(caption)
+            .onErrorResume(throwable -> {
+                LOGGER.error("zztg [telegram-starter] Произошла ошибка при отправке видео");
+                return Mono.error(new SendVideoException(throwable));
+            })
             .subscribeOn(Schedulers.boundedElastic());
     }
 }
