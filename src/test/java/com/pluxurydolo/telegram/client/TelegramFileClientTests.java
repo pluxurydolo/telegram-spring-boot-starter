@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.util.ReflectionTestUtils.setField;
 import static reactor.test.StepVerifier.create;
@@ -59,6 +60,18 @@ class TelegramFileClientTests {
         create(result)
             .expectNext(bytes)
             .verifyComplete();
+    }
+
+    @Test
+    void testGetFileWhenExceptionOccurred() {
+        doThrow(RuntimeException.class)
+            .when(telegramBot).execute(any());
+
+        Mono<byte[]> result = telegramFileClient.getFile(getFileRequest(telegramBot));
+
+        create(result)
+            .expectError(RuntimeException.class)
+            .verify();
     }
 
     private static GetFileRequest getFileRequest(TelegramBot telegramBot) {
