@@ -5,6 +5,7 @@ import com.pengrad.telegrambot.model.Update;
 import com.pluxurydolo.telegram.client.TelegramTextClient;
 import com.pluxurydolo.telegram.dto.UpdateType;
 import com.pluxurydolo.telegram.dto.request.SendTextRequest;
+import com.pluxurydolo.telegram.ratelimiter.PerUserRateLimiter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -13,13 +14,15 @@ public abstract class AbstractUpdateHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractUpdateHandler.class);
 
     private final TelegramTextClient telegramTextClient;
+    private final PerUserRateLimiter perUserRateLimiter;
 
-    protected AbstractUpdateHandler(TelegramTextClient telegramTextClient) {
+    protected AbstractUpdateHandler(TelegramTextClient telegramTextClient, PerUserRateLimiter perUserRateLimiter) {
         this.telegramTextClient = telegramTextClient;
+        this.perUserRateLimiter = perUserRateLimiter;
     }
 
     public Mono<String> handle(Update update) {
-        return doWork(update)
+        return perUserRateLimiter.withRateLimit(update, doWork(update))
             .doOnSuccess(_ -> LOGGER.info("zxsf [telegram-starter] Сообщение типа {} успешно обработано", updateType()))
             .onErrorResume(this::handleException);
     }
