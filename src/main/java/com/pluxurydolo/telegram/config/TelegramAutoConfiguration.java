@@ -17,7 +17,8 @@ import org.springframework.context.annotation.Import;
     TelegramClientConfiguration.class,
     TelegramUpdateConfiguration.class,
     TelegramFilterConfiguration.class,
-    TelegramExceptionConfiguration.class
+    TelegramExceptionConfiguration.class,
+    TelegramRateLimitConfiguration.class
 })
 public class TelegramAutoConfiguration {
 }

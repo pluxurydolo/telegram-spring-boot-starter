@@ -1,4 +1,4 @@
-package com.pluxurydolo.telegram.exception;
+package com.pluxurydolo.telegram.exception.handler;
 
 import com.pengrad.telegrambot.ExceptionHandler;
 import com.pengrad.telegrambot.TelegramException;

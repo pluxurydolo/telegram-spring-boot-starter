@@ -1,6 +1,6 @@
 package com.pluxurydolo.telegram.config;
 
-import com.pluxurydolo.telegram.exception.TelegramExceptionHandler;
+import com.pluxurydolo.telegram.exception.handler.TelegramExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
