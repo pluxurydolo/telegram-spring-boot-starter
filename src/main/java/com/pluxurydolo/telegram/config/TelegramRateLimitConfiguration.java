@@ -5,18 +5,42 @@ import com.pluxurydolo.telegram.properties.TelegramRateLimitProperties;
 import com.pluxurydolo.telegram.ratelimiter.PerUserRateLimiter;
 import com.pluxurydolo.telegram.ratelimiter.handler.RateLimitExceededHandler;
 import com.pluxurydolo.telegram.ratelimiter.message.RateLimitExceededMessageBuilder;
+import io.github.resilience4j.ratelimiter.RateLimiterConfig;
+import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.time.Duration;
+
+import static java.time.Duration.ZERO;
 
 @Configuration
 public class TelegramRateLimitConfiguration {
 
     @Bean
     public PerUserRateLimiter perUserRateLimiter(
-        TelegramRateLimitProperties telegramRateLimitProperties,
+        RateLimiterConfig rateLimiterConfig,
+        RateLimiterRegistry rateLimiterRegistry,
         RateLimitExceededHandler rateLimitExceededHandler
     ) {
-        return new PerUserRateLimiter(telegramRateLimitProperties, rateLimitExceededHandler);
+        return new PerUserRateLimiter(rateLimiterConfig, rateLimiterRegistry, rateLimitExceededHandler);
+    }
+
+    @Bean
+    public RateLimiterRegistry rateLimiterRegistry(RateLimiterConfig rateLimiterConfig) {
+        return RateLimiterRegistry.of(rateLimiterConfig);
+    }
+
+    @Bean
+    public RateLimiterConfig rateLimiterConfig(TelegramRateLimitProperties telegramRateLimitProperties) {
+        int threshold = telegramRateLimitProperties.threshold();
+        Duration refreshPeriod = telegramRateLimitProperties.refreshPeriod();
+
+        return RateLimiterConfig.custom()
+            .limitRefreshPeriod(refreshPeriod)
+            .limitForPeriod(threshold)
+            .timeoutDuration(ZERO)
+            .build();
     }
 
     @Bean
