@@ -20,12 +20,7 @@ public class TelegramFilterConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(
-        prefix = "telegram.filter",
-        name = "enabled",
-        havingValue = "true",
-        matchIfMissing = true
-    )
+    @ConditionalOnProperty(prefix = "telegram.filter.sender", name = "enabled", havingValue = "true")
     public SenderFilter senderFilter(TelegramUpdateParser telegramUpdateParser, TelegramProperties telegramProperties) {
         long allowedUserId = telegramProperties.allowedUserId();
         return new SenderFilter(telegramUpdateParser, allowedUserId);

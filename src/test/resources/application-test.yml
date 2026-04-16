@@ -1,5 +1,0 @@
-telegram:
-  enabled: true
-  allowed-user-id: 123
-  channel-id: 123
-  file-uri: https://test

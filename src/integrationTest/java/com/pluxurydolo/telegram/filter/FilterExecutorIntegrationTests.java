@@ -20,7 +20,7 @@ class FilterExecutorIntegrationTests extends AbstractIntegrationTests {
 
     @Test
     void testExecute() {
-        Mono<Boolean> result = filterExecutor.execute(textUpdate(123L));
+        Mono<Boolean> result = filterExecutor.execute(textUpdate(12345L));
 
         create(result)
             .expectNext(true)
@@ -29,7 +29,7 @@ class FilterExecutorIntegrationTests extends AbstractIntegrationTests {
 
     @Test
     void testExecuteWithProhibitedSenderId() {
-        Mono<Boolean> result = filterExecutor.execute(textUpdate(456L));
+        Mono<Boolean> result = filterExecutor.execute(textUpdate(1L));
 
         create(result)
             .expectNext(false)

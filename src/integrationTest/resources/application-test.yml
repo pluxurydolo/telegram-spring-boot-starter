@@ -1,0 +1,13 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+telegram:
+  enabled: true
+  filter:
+    sender:
+      enabled: true
+      id: 12345
+  rate-limit:
+    threshold: 1
+    refresh:
+      period: 1m
