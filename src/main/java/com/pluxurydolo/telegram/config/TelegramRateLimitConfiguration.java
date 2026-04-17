@@ -7,6 +7,7 @@ import com.pluxurydolo.telegram.ratelimiter.handler.RateLimitExceededHandler;
 import com.pluxurydolo.telegram.ratelimiter.message.RateLimitExceededMessageBuilder;
 import io.github.resilience4j.ratelimiter.RateLimiterConfig;
 import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,6 +19,7 @@ import static java.time.Duration.ZERO;
 public class TelegramRateLimitConfiguration {
 
     @Bean
+    @ConditionalOnMissingBean
     public PerUserRateLimiter perUserRateLimiter(
         RateLimiterConfig rateLimiterConfig,
         RateLimiterRegistry rateLimiterRegistry,
@@ -27,11 +29,13 @@ public class TelegramRateLimitConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public RateLimiterRegistry rateLimiterRegistry(RateLimiterConfig rateLimiterConfig) {
         return RateLimiterRegistry.of(rateLimiterConfig);
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public RateLimiterConfig rateLimiterConfig(TelegramRateLimitProperties telegramRateLimitProperties) {
         int threshold = telegramRateLimitProperties.threshold();
         Duration refreshPeriod = telegramRateLimitProperties.refreshPeriod();
@@ -44,6 +48,7 @@ public class TelegramRateLimitConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public RateLimitExceededHandler rateLimitExceededHandler(
         TelegramTextClient telegramTextClient,
         TelegramRateLimitProperties telegramRateLimitProperties,
@@ -57,6 +62,7 @@ public class TelegramRateLimitConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public RateLimitExceededMessageBuilder rateLimitExceededMessageBuilder() {
         return new RateLimitExceededMessageBuilder();
     }

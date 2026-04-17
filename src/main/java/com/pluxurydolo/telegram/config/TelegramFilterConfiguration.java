@@ -5,6 +5,7 @@ import com.pluxurydolo.telegram.filter.FilterExecutor;
 import com.pluxurydolo.telegram.filter.SenderFilter;
 import com.pluxurydolo.telegram.parser.TelegramUpdateParser;
 import com.pluxurydolo.telegram.properties.TelegramProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import java.util.List;
 public class TelegramFilterConfiguration {
 
     @Bean
+    @ConditionalOnMissingBean
     public FilterExecutor filterExecutor(List<Filter> filters) {
         return new FilterExecutor(filters);
     }
