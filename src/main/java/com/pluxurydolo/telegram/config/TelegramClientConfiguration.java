@@ -1,5 +1,6 @@
 package com.pluxurydolo.telegram.config;
 
+import com.pluxurydolo.telegram.client.TelegramButtonClient;
 import com.pluxurydolo.telegram.client.TelegramFileClient;
 import com.pluxurydolo.telegram.client.TelegramImageClient;
 import com.pluxurydolo.telegram.client.TelegramTextClient;
@@ -39,6 +40,13 @@ public class TelegramClientConfiguration {
     public TelegramFileClient telegramFileClient(MediaRetriever mediaRetriever, TelegramProperties telegramProperties) {
         String fileUri = telegramProperties.fileUri();
         return new TelegramFileClient(mediaRetriever, fileUri);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public TelegramButtonClient telegramButtonClient(TelegramProperties telegramProperties) {
+        long userId = telegramProperties.allowedUserId();
+        return new TelegramButtonClient(userId);
     }
 
     @Bean

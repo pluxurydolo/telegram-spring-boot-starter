@@ -77,6 +77,4 @@ class TelegramFileClientTests {
     private static GetFileRequest getFileRequest(TelegramBot telegramBot) {
         return new GetFileRequest("fileUri", telegramBot);
     }
-
-
 }
