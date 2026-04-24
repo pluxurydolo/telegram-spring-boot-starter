@@ -2,12 +2,15 @@ spring:
   main:
     allow-bean-definition-overriding: true
 telegram:
-  enabled: true
   filter:
-    sender:
+    by-user-id:
       enabled: true
-      id: 12345
+      whitelist:
+        user-id: 123
+  channel:
+    id: 123
+  api:
+    file-uri: https://api.telegram.org/file/bot123/%s
   rate-limit:
     threshold: 1
-    refresh:
-      period: 1m
+    refresh-period: 1m

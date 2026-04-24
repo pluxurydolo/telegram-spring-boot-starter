@@ -29,7 +29,9 @@ public class PerUserRateLimiter {
     }
 
     public Mono<String> withRateLimit(Update update, TelegramBot telegramBot, Mono<String> operation) {
-        Long userId = update.message().from().id();
+        Long userId = update.message()
+            .from()
+            .id();
 
         return operation.transformDeferred(mono -> applyRateLimiter(userId, mono))
             .onErrorResume(_ -> {

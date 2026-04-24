@@ -7,6 +7,7 @@ import com.pluxurydolo.telegram.dto.request.SendEditTextRequest;
 import com.pluxurydolo.telegram.dto.request.SendTextRequest;
 import com.pluxurydolo.telegram.exception.SendEditTextException;
 import com.pluxurydolo.telegram.exception.SendTextException;
+import com.pluxurydolo.telegram.properties.TelegramFilterProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -17,17 +18,19 @@ import static com.pengrad.telegrambot.model.request.ParseMode.HTML;
 public class TelegramTextClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(TelegramTextClient.class);
 
-    private final long userId;
+    private final TelegramFilterProperties telegramFilterProperties;
 
-    public TelegramTextClient(long userId) {
-        this.userId = userId;
+    public TelegramTextClient(TelegramFilterProperties telegramFilterProperties) {
+        this.telegramFilterProperties = telegramFilterProperties;
     }
 
     public Mono<Integer> sendText(SendTextRequest request) {
         String text = request.text();
         TelegramBot bot = request.bot();
 
-        SendMessage sendMessage = new SendMessage(userId, text)
+        long whitelistUserId = telegramFilterProperties.whitelistUserId();
+
+        SendMessage sendMessage = new SendMessage(whitelistUserId, text)
             .parseMode(HTML);
 
         return Mono.fromCallable(() -> bot.execute(sendMessage))
@@ -44,7 +47,9 @@ public class TelegramTextClient {
         int messageId = request.messageId();
         TelegramBot bot = request.bot();
 
-        EditMessageText editMessageText = new EditMessageText(userId, messageId, text)
+        long whitelistUserId = telegramFilterProperties.whitelistUserId();
+
+        EditMessageText editMessageText = new EditMessageText(whitelistUserId, messageId, text)
             .parseMode(HTML);
 
         return Mono.fromCallable(() -> bot.execute(editMessageText))

@@ -1,4 +1,4 @@
-package com.pluxurydolo.telegram.config;
+package com.pluxurydolo.telegram.configuration;
 
 import com.pluxurydolo.telegram.client.TelegramTextClient;
 import com.pluxurydolo.telegram.properties.TelegramRateLimitProperties;

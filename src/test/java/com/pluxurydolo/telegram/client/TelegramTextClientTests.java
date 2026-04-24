@@ -5,8 +5,11 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.response.SendResponse;
 import com.pluxurydolo.telegram.dto.request.SendEditTextRequest;
 import com.pluxurydolo.telegram.dto.request.SendTextRequest;
+import com.pluxurydolo.telegram.properties.TelegramFilterProperties;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
@@ -18,7 +21,9 @@ import static reactor.test.StepVerifier.create;
 
 @ExtendWith(MockitoExtension.class)
 class TelegramTextClientTests {
-    private static final TelegramTextClient CLIENT = new TelegramTextClient(123L);
+
+    @Mock
+    private TelegramFilterProperties telegramFilterProperties;
 
     @Mock
     private TelegramBot telegramBot;
@@ -29,6 +34,15 @@ class TelegramTextClientTests {
     @Mock
     private Message message;
 
+    @InjectMocks
+    private TelegramTextClient telegramTextClient;
+
+    @BeforeEach
+    void setUp() {
+        when(telegramFilterProperties.whitelistUserId())
+            .thenReturn(123L);
+    }
+
     @Test
     void testSendText() {
         when(telegramBot.execute(any()))
@@ -38,7 +52,7 @@ class TelegramTextClientTests {
         when(message.messageId())
             .thenReturn(1);
 
-        Mono<Integer> result = CLIENT.sendText(sendTextRequest(telegramBot));
+        Mono<Integer> result = telegramTextClient.sendText(sendTextRequest(telegramBot));
 
         create(result)
             .expectNext(1)
@@ -50,7 +64,7 @@ class TelegramTextClientTests {
         doThrow(RuntimeException.class)
             .when(telegramBot).execute(any());
 
-        Mono<Integer> result = CLIENT.sendText(sendTextRequest(telegramBot));
+        Mono<Integer> result = telegramTextClient.sendText(sendTextRequest(telegramBot));
 
         create(result)
             .expectError(RuntimeException.class)
@@ -62,7 +76,7 @@ class TelegramTextClientTests {
         when(telegramBot.execute(any()))
             .thenReturn(sendResponse);
 
-        Mono<String> result = CLIENT.sendEditText(sendEditTextRequest(telegramBot));
+        Mono<String> result = telegramTextClient.sendEditText(sendEditTextRequest(telegramBot));
 
         create(result)
             .expectNext("text")
@@ -74,7 +88,7 @@ class TelegramTextClientTests {
         doThrow(RuntimeException.class)
             .when(telegramBot).execute(any());
 
-        Mono<String> result = CLIENT.sendEditText(sendEditTextRequest(telegramBot));
+        Mono<String> result = telegramTextClient.sendEditText(sendEditTextRequest(telegramBot));
 
         create(result)
             .expectError(RuntimeException.class)

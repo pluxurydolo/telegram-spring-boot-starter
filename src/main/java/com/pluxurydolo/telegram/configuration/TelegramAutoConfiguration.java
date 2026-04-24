@@ -1,6 +1,8 @@
-package com.pluxurydolo.telegram.config;
+package com.pluxurydolo.telegram.configuration;
 
-import com.pluxurydolo.telegram.properties.TelegramProperties;
+import com.pluxurydolo.telegram.properties.TelegramApiProperties;
+import com.pluxurydolo.telegram.properties.TelegramChannelProperties;
+import com.pluxurydolo.telegram.properties.TelegramFilterProperties;
 import com.pluxurydolo.telegram.properties.TelegramRateLimitProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -8,7 +10,9 @@ import org.springframework.context.annotation.Import;
 
 @AutoConfiguration
 @EnableConfigurationProperties({
-    TelegramProperties.class,
+    TelegramApiProperties.class,
+    TelegramFilterProperties.class,
+    TelegramChannelProperties.class,
     TelegramRateLimitProperties.class
 })
 @Import({

@@ -6,6 +6,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+import static com.pluxurydolo.telegram.dto.Result.SUCCESS;
+
 public class FilterExecutor {
     private final List<Filter> filters;
 
@@ -16,6 +18,6 @@ public class FilterExecutor {
     public Mono<Boolean> execute(Update update) {
         return Flux.fromIterable(filters)
             .map(filter -> filter.doFilter(update))
-            .all(result -> result);
+            .all(result -> result == SUCCESS);
     }
 }

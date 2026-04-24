@@ -3,16 +3,10 @@ package com.pluxurydolo.telegram.properties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.Name;
 
-@ConfigurationProperties(prefix = "telegram")
-public record TelegramProperties(
+@ConfigurationProperties(prefix = "telegram.api")
+public record TelegramApiProperties(
 
-    @Name("filter.sender.id")
-    long allowedUserId,
-
-    @Name("channel.id")
-    long channelId,
-
-    @Name("file.uri")
+    @Name("file-uri")
     String fileUri
 ) {
 }

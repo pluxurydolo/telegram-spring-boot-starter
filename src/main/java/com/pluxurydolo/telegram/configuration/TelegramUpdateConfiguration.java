@@ -1,4 +1,4 @@
-package com.pluxurydolo.telegram.config;
+package com.pluxurydolo.telegram.configuration;
 
 import com.pluxurydolo.telegram.filter.FilterExecutor;
 import com.pluxurydolo.telegram.handler.executor.AbstractHandlerExecutor;

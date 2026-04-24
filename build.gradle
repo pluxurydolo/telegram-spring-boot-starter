@@ -108,10 +108,12 @@ jreleaser {
 }
 
 dependencies {
-    api "com.github.pengrad:java-telegram-bot-api:$telegramBotApiVersion"
-
     implementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    api "com.github.pengrad:java-telegram-bot-api:$telegramBotApiVersion"
 
     implementation "io.github.resilience4j:resilience4j-spring-boot4:$resilience4jVersion"
     implementation "io.github.resilience4j:resilience4j-reactor:$resilience4jVersion"

@@ -4,8 +4,11 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.response.SendResponse;
 import com.pluxurydolo.telegram.dto.request.ButtonRequest;
 import com.pluxurydolo.telegram.dto.request.SendButtonsRequest;
+import com.pluxurydolo.telegram.properties.TelegramFilterProperties;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
@@ -19,7 +22,9 @@ import static reactor.test.StepVerifier.create;
 
 @ExtendWith(MockitoExtension.class)
 class TelegramButtonClientTests {
-    private static final TelegramButtonClient CLIENT = new TelegramButtonClient(123L);
+
+    @Mock
+    private TelegramFilterProperties telegramFilterProperties;
 
     @Mock
     private TelegramBot telegramBot;
@@ -27,12 +32,21 @@ class TelegramButtonClientTests {
     @Mock
     private SendResponse sendResponse;
 
+    @InjectMocks
+    private TelegramButtonClient telegramButtonClient;
+
+    @BeforeEach
+    void setUp() {
+        when(telegramFilterProperties.whitelistUserId())
+            .thenReturn(123L);
+    }
+
     @Test
     void testSendButtons() {
         when(telegramBot.execute(any()))
             .thenReturn(sendResponse);
 
-        Mono<String> result = CLIENT.sendButtons(sendButtonsRequest(telegramBot));
+        Mono<String> result = telegramButtonClient.sendButtons(sendButtonsRequest(telegramBot));
 
         create(result)
             .expectNext("text")
@@ -44,7 +58,7 @@ class TelegramButtonClientTests {
         doThrow(RuntimeException.class)
             .when(telegramBot).execute(any());
 
-        Mono<String> result = CLIENT.sendButtons(sendButtonsRequest(telegramBot));
+        Mono<String> result = telegramButtonClient.sendButtons(sendButtonsRequest(telegramBot));
 
         create(result)
             .expectError(RuntimeException.class)

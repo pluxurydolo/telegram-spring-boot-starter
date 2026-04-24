@@ -1,0 +1,120 @@
+{
+  "properties": [
+    {
+      "name": "telegram.channel.id",
+      "type": "java.lang.Long",
+      "description": "ID телеграм-канала для отправки медиа.",
+      "sourceType": "com.pluxurydolo.telegram.properties.TelegramChannelProperties"
+    },
+    {
+      "name": "telegram.api.file-uri",
+      "type": "java.lang.String",
+      "description": "URI файла, отправленного в бота.",
+      "sourceType": "com.pluxurydolo.telegram.properties.TelegramApiProperties"
+    },
+    {
+      "name": "telegram.filter.by-user-id.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Признак включения фильтрации по Telegram user id.",
+      "sourceType": "com.pluxurydolo.telegram.properties.TelegramFilterProperties"
+    },
+    {
+      "name": "telegram.filter.by-user-id.whitelist.user-id",
+      "type": "java.lang.Long",
+      "description": "Telegram user id, который может отправлять сообщения в бота.",
+      "sourceType": "com.pluxurydolo.telegram.properties.TelegramFilterProperties"
+    },
+    {
+      "name": "telegram.rate-limit.threshold",
+      "type": "java.lang.Integer",
+      "description": "Количество запросов, которые могут идти от одного пользователя в единицу времени.",
+      "sourceType": "com.pluxurydolo.telegram.properties.TelegramRateLimitProperties"
+    },
+    {
+      "name": "telegram.rate-limit.refresh-period",
+      "type": "java.time.Duration",
+      "description": "Период обновления ограничителя запросов.",
+      "sourceType": "com.pluxurydolo.telegram.properties.TelegramRateLimitProperties"
+    }
+  ],
+  "hints": [
+    {
+      "name": "telegram.channel.id",
+      "values": [
+        {
+          "value": "${TELEGRAM_CHANNEL_ID}"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "telegram.api.file-uri",
+      "values": [
+        {
+          "value": "https://api.telegram.org/file/bot${telegram.bot.cringecore.token}/%s"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "telegram.filter.by-user-id.enabled",
+      "values": [
+        {
+          "value": "true"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "telegram.filter.by-user-id.whitelist.user-id",
+      "values": [
+        {
+          "value": "${TELEGRAM_USER_ID}"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "telegram.rate-limit.threshold",
+      "values": [
+        {
+          "value": "5"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "telegram.rate-limit.refresh-period",
+      "values": [
+        {
+          "value": "1m"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    }
+  ]
+}

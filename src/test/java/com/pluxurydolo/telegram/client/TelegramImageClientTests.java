@@ -3,8 +3,11 @@ package com.pluxurydolo.telegram.client;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.response.SendResponse;
 import com.pluxurydolo.telegram.dto.request.SendImageRequest;
+import com.pluxurydolo.telegram.properties.TelegramChannelProperties;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
@@ -16,7 +19,9 @@ import static reactor.test.StepVerifier.create;
 
 @ExtendWith(MockitoExtension.class)
 class TelegramImageClientTests {
-    private static final TelegramImageClient CLIENT = new TelegramImageClient(1L);
+
+    @Mock
+    private TelegramChannelProperties telegramChannelProperties;
 
     @Mock
     private TelegramBot telegramBot;
@@ -24,12 +29,21 @@ class TelegramImageClientTests {
     @Mock
     private SendResponse sendResponse;
 
+    @InjectMocks
+    private TelegramImageClient telegramImageClient;
+
+    @BeforeEach
+    void setUp() {
+        when(telegramChannelProperties.id())
+            .thenReturn(123L);
+    }
+
     @Test
     void testSendImage() {
         when(telegramBot.execute(any()))
             .thenReturn(sendResponse);
 
-        Mono<String> result = CLIENT.sendImage(sendImageRequest(telegramBot));
+        Mono<String> result = telegramImageClient.sendImage(sendImageRequest(telegramBot));
 
         create(result)
             .expectNext("caption")
@@ -41,7 +55,7 @@ class TelegramImageClientTests {
         doThrow(RuntimeException.class)
             .when(telegramBot).execute(any());
 
-        Mono<String> result = CLIENT.sendImage(sendImageRequest(telegramBot));
+        Mono<String> result = telegramImageClient.sendImage(sendImageRequest(telegramBot));
 
         create(result)
             .expectError(RuntimeException.class)

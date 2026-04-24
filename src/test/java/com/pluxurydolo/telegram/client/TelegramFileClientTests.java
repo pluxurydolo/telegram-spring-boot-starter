@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.File;
 import com.pengrad.telegrambot.response.GetFileResponse;
 import com.pluxurydolo.telegram.dto.request.GetFileRequest;
+import com.pluxurydolo.telegram.properties.TelegramApiProperties;
 import com.pluxurydolo.telegram.util.MediaRetriever;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,11 +18,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.util.ReflectionTestUtils.setField;
 import static reactor.test.StepVerifier.create;
 
 @ExtendWith(MockitoExtension.class)
 class TelegramFileClientTests {
+
+    @Mock
+    private TelegramApiProperties telegramApiProperties;
 
     @Mock
     private MediaRetriever mediaRetriever;
@@ -40,7 +43,8 @@ class TelegramFileClientTests {
 
     @BeforeEach
     void setUp() {
-        setField(telegramFileClient, "fileUri", "fileUri");
+        when(telegramApiProperties.fileUri())
+            .thenReturn("fileUri");
     }
 
     @Test

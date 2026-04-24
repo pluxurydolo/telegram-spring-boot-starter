@@ -1,4 +1,4 @@
-package com.pluxurydolo.telegram.config;
+package com.pluxurydolo.telegram.configuration;
 
 import com.pluxurydolo.telegram.exception.handler.TelegramExceptionHandler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

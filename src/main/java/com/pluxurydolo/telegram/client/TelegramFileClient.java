@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.GetFile;
 import com.pluxurydolo.telegram.dto.request.GetFileRequest;
 import com.pluxurydolo.telegram.exception.GetFileException;
+import com.pluxurydolo.telegram.properties.TelegramApiProperties;
 import com.pluxurydolo.telegram.util.MediaRetriever;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,12 +14,12 @@ import reactor.core.scheduler.Schedulers;
 public class TelegramFileClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(TelegramFileClient.class);
 
+    private final TelegramApiProperties telegramApiProperties;
     private final MediaRetriever mediaRetriever;
-    private final String fileUri;
 
-    public TelegramFileClient(MediaRetriever mediaRetriever, String fileUri) {
+    public TelegramFileClient(TelegramApiProperties telegramApiProperties, MediaRetriever mediaRetriever) {
+        this.telegramApiProperties = telegramApiProperties;
         this.mediaRetriever = mediaRetriever;
-        this.fileUri = fileUri;
     }
 
     public Mono<byte[]> getFile(GetFileRequest request) {
@@ -26,6 +27,7 @@ public class TelegramFileClient {
         TelegramBot bot = request.bot();
 
         GetFile getFile = new GetFile(fileId);
+        String fileUri = telegramApiProperties.fileUri();
 
         return Mono.fromCallable(() -> bot.execute(getFile))
             .map(response -> response.file().filePath())

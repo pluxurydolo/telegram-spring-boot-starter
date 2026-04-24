@@ -7,6 +7,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pluxurydolo.telegram.dto.request.ButtonRequest;
 import com.pluxurydolo.telegram.dto.request.SendButtonsRequest;
 import com.pluxurydolo.telegram.exception.handler.SendButtonsException;
+import com.pluxurydolo.telegram.properties.TelegramFilterProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -15,10 +16,10 @@ import reactor.core.scheduler.Schedulers;
 public class TelegramButtonClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(TelegramButtonClient.class);
 
-    private final long userId;
+    private final TelegramFilterProperties telegramFilterProperties;
 
-    public TelegramButtonClient(long userId) {
-        this.userId = userId;
+    public TelegramButtonClient(TelegramFilterProperties telegramFilterProperties) {
+        this.telegramFilterProperties = telegramFilterProperties;
     }
 
     public Mono<String> sendButtons(SendButtonsRequest request) {
@@ -33,7 +34,9 @@ public class TelegramButtonClient {
 
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup(buttons);
 
-        SendMessage sendMessage = new SendMessage(userId, text)
+        long whitelistUserId = telegramFilterProperties.whitelistUserId();
+
+        SendMessage sendMessage = new SendMessage(whitelistUserId, text)
             .replyMarkup(keyboard);
 
         return Mono.fromCallable(() -> bot.execute(sendMessage))
