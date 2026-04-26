@@ -35,8 +35,9 @@ public class TelegramTextClient {
 
         return Mono.fromCallable(() -> bot.execute(sendMessage))
             .map(response -> response.message().messageId())
+            .doOnSuccess(_ -> LOGGER.info("zgrn [telegram-starter] Сообщение с текстом {} успешно отправлено", text))
             .onErrorResume(throwable -> {
-                LOGGER.error("rghu [telegram-starter] Произошла ошибка при редактировании сообщения с текстом {}", text);
+                LOGGER.error("rghu [telegram-starter] Произошла ошибка при отправке сообщения с текстом {}", text);
                 return Mono.error(new SendTextException(throwable));
             })
             .subscribeOn(Schedulers.boundedElastic());
@@ -54,6 +55,7 @@ public class TelegramTextClient {
 
         return Mono.fromCallable(() -> bot.execute(editMessageText))
             .thenReturn(text)
+            .doOnSuccess(_ -> LOGGER.info("rvak [telegram-starter] Видео с текстом {} успешно отредактировано", text))
             .onErrorResume(throwable -> {
                 LOGGER.error("okhw [telegram-starter] Произошла ошибка при редактировании сообщения с текстом {}", text);
                 return Mono.error(new SendEditTextException(throwable));

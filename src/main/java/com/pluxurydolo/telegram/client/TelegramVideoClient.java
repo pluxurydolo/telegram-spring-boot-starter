@@ -31,8 +31,9 @@ public class TelegramVideoClient {
 
         return Mono.fromCallable(() -> bot.execute(sendVideo))
             .thenReturn(caption)
+            .doOnSuccess(_ -> LOGGER.info("nevj [telegram-starter] Видео с подписью {} успешно отправлено", caption))
             .onErrorResume(throwable -> {
-                LOGGER.error("zztg [telegram-starter] Произошла ошибка при отправке видео");
+                LOGGER.error("zztg [telegram-starter] Произошла ошибка при отправке видео с подписью {}", caption);
                 return Mono.error(new SendVideoException(throwable));
             })
             .subscribeOn(Schedulers.boundedElastic());

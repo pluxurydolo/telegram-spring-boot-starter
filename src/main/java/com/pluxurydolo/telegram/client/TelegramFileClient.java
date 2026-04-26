@@ -33,6 +33,7 @@ public class TelegramFileClient {
             .map(response -> response.file().filePath())
             .map(filePath -> String.format(fileUri, filePath))
             .flatMap(mediaRetriever::retrieve)
+            .doOnSuccess(_ -> LOGGER.info("gqgy [telegram-starter] Файл {} успешно получен", fileId))
             .onErrorResume(throwable -> {
                 LOGGER.error("ktmh [telegram-starter] Произошла ошибка при получении файла {}", fileId);
                 return Mono.error(new GetFileException(throwable));

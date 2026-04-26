@@ -31,8 +31,9 @@ public class TelegramImageClient {
 
         return Mono.fromCallable(() -> bot.execute(sendPhoto))
             .thenReturn(caption)
+            .doOnSuccess(_ -> LOGGER.info("uhue [telegram-starter] Картинка с подписью {} успешно отправлена", caption))
             .onErrorResume(throwable -> {
-                LOGGER.error("mlap [telegram-starter] Произошла ошибка при отправке картинки");
+                LOGGER.error("mlap [telegram-starter] Произошла ошибка при отправке картинки с подписью {}", caption);
                 return Mono.error(new SendImageException(throwable));
             })
             .subscribeOn(Schedulers.boundedElastic());

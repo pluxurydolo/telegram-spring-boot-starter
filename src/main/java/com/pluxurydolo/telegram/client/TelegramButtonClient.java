@@ -41,6 +41,7 @@ public class TelegramButtonClient {
 
         return Mono.fromCallable(() -> bot.execute(sendMessage))
             .thenReturn(text)
+            .doOnSuccess(_ -> LOGGER.info("hyoi [telegram-starter] Кнопки с текстом {} успешно отправлены", text))
             .onErrorResume(throwable -> {
                 LOGGER.error("eexp [telegram-starter] Произошла ошибка при отправке кнопок с текстом {}", text);
                 return Mono.error(new SendButtonsException(throwable));
