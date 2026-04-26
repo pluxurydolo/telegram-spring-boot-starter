@@ -8,9 +8,9 @@ telegram:
       whitelist:
         user-id: 123
   channel:
-    id: 123
+    id: 456
   api:
-    file-uri: https://api.telegram.org/file/bot123/%s
+    file-uri: https://api.telegram.org/file/bot789/%s
   rate-limit:
     threshold: 1
     refresh-period: 1m
