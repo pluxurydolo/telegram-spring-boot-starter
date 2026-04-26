@@ -6,7 +6,7 @@ import ch.qos.logback.core.read.ListAppender;
 import ch.qos.logback.core.spi.AppenderAttachable;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.response.SendResponse;
-import com.pluxurydolo.telegram.base.AbstractTelegramClientTests;
+import com.pluxurydolo.telegram.base.AbstractClientIntegrationTests;
 import com.pluxurydolo.telegram.dto.request.SendVideoRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.slf4j.LoggerFactory.getLogger;
 
-class TelegramVideoClientIntegrationTests extends AbstractTelegramClientTests {
+class TelegramVideoClientIntegrationTests extends AbstractClientIntegrationTests {
     private static final AppenderAttachable<ILoggingEvent> LOGGER =
         (Logger) getLogger(TelegramVideoClient.class);
 

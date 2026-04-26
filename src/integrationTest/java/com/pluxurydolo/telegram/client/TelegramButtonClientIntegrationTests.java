@@ -6,7 +6,7 @@ import ch.qos.logback.core.read.ListAppender;
 import ch.qos.logback.core.spi.AppenderAttachable;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.response.SendResponse;
-import com.pluxurydolo.telegram.base.AbstractTelegramClientTests;
+import com.pluxurydolo.telegram.base.AbstractClientIntegrationTests;
 import com.pluxurydolo.telegram.dto.request.ButtonRequest;
 import com.pluxurydolo.telegram.dto.request.SendButtonsRequest;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.slf4j.LoggerFactory.getLogger;
 
-class TelegramButtonClientIntegrationTests extends AbstractTelegramClientTests {
+class TelegramButtonClientIntegrationTests extends AbstractClientIntegrationTests {
     private static final AppenderAttachable<ILoggingEvent> LOGGER =
         (Logger) getLogger(TelegramButtonClient.class);
 
