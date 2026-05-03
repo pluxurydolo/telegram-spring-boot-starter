@@ -5,6 +5,8 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.response.SendResponse;
 import com.pluxurydolo.telegram.dto.request.SendEditTextRequest;
 import com.pluxurydolo.telegram.dto.request.SendTextRequest;
+import com.pluxurydolo.telegram.exception.SendEditTextException;
+import com.pluxurydolo.telegram.exception.SendTextException;
 import com.pluxurydolo.telegram.properties.TelegramFilterProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,8 +69,7 @@ class TelegramTextClientTests {
         Mono<Integer> result = telegramTextClient.sendText(sendTextRequest(telegramBot));
 
         create(result)
-            .expectError(RuntimeException.class)
-            .verify();
+            .verifyErrorMatches(throwable -> throwable.getClass().equals(SendTextException.class));
     }
 
     @Test
@@ -91,8 +92,7 @@ class TelegramTextClientTests {
         Mono<String> result = telegramTextClient.sendEditText(sendEditTextRequest(telegramBot));
 
         create(result)
-            .expectError(RuntimeException.class)
-            .verify();
+            .verifyErrorMatches(throwable -> throwable.getClass().equals(SendEditTextException.class));
     }
 
     private static SendTextRequest sendTextRequest(TelegramBot telegramBot) {

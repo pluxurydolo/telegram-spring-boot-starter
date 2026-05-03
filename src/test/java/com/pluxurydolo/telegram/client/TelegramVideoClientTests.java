@@ -3,6 +3,7 @@ package com.pluxurydolo.telegram.client;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.response.SendResponse;
 import com.pluxurydolo.telegram.dto.request.SendVideoRequest;
+import com.pluxurydolo.telegram.exception.SendVideoException;
 import com.pluxurydolo.telegram.properties.TelegramChannelProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,8 +59,7 @@ class TelegramVideoClientTests {
         Mono<String> result = telegramVideoClient.sendVideo(sendVideoRequest(telegramBot));
 
         create(result)
-            .expectError(RuntimeException.class)
-            .verify();
+            .verifyErrorMatches(throwable -> throwable.getClass().equals(SendVideoException.class));
     }
 
     private static SendVideoRequest sendVideoRequest(TelegramBot telegramBot) {

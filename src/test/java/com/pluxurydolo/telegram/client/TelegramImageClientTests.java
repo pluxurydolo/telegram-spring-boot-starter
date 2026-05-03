@@ -3,6 +3,7 @@ package com.pluxurydolo.telegram.client;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.response.SendResponse;
 import com.pluxurydolo.telegram.dto.request.SendImageRequest;
+import com.pluxurydolo.telegram.exception.SendImageException;
 import com.pluxurydolo.telegram.properties.TelegramChannelProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,8 +59,7 @@ class TelegramImageClientTests {
         Mono<String> result = telegramImageClient.sendImage(sendImageRequest(telegramBot));
 
         create(result)
-            .expectError(RuntimeException.class)
-            .verify();
+            .verifyErrorMatches(throwable -> throwable.getClass().equals(SendImageException.class));
     }
 
     private static SendImageRequest sendImageRequest(TelegramBot telegramBot) {

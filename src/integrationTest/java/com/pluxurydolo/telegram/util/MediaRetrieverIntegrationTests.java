@@ -35,7 +35,6 @@ class MediaRetrieverIntegrationTests extends AbstractIntegrationTests {
         Mono<byte[]> result = mediaRetriever.retrieve(path);
 
         create(result)
-            .expectError(UnknownHostException.class)
-            .verify();
+            .verifyErrorMatches(throwable -> throwable.getClass().equals(UnknownHostException.class));
     }
 }

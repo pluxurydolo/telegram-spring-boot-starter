@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.response.SendResponse;
 import com.pluxurydolo.telegram.dto.request.ButtonRequest;
 import com.pluxurydolo.telegram.dto.request.SendButtonsRequest;
+import com.pluxurydolo.telegram.exception.handler.SendButtonsException;
 import com.pluxurydolo.telegram.properties.TelegramFilterProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,8 +62,7 @@ class TelegramButtonClientTests {
         Mono<String> result = telegramButtonClient.sendButtons(sendButtonsRequest(telegramBot));
 
         create(result)
-            .expectError(RuntimeException.class)
-            .verify();
+            .verifyErrorMatches(throwable -> throwable.getClass().equals(SendButtonsException.class));
     }
 
     private static SendButtonsRequest sendButtonsRequest(TelegramBot telegramBot) {

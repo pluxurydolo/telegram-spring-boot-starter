@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.File;
 import com.pengrad.telegrambot.response.GetFileResponse;
 import com.pluxurydolo.telegram.dto.request.GetFileRequest;
+import com.pluxurydolo.telegram.exception.GetFileException;
 import com.pluxurydolo.telegram.properties.TelegramApiProperties;
 import com.pluxurydolo.telegram.util.MediaRetriever;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,8 +75,7 @@ class TelegramFileClientTests {
         Mono<byte[]> result = telegramFileClient.getFile(getFileRequest(telegramBot));
 
         create(result)
-            .expectError(RuntimeException.class)
-            .verify();
+            .verifyErrorMatches(throwable -> throwable.getClass().equals(GetFileException.class));
     }
 
     private static GetFileRequest getFileRequest(TelegramBot telegramBot) {
