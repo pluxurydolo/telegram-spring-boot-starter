@@ -44,7 +44,7 @@ class TelegramButtonClientIntegrationTests extends AbstractClientIntegrationTest
                     .hasSize(1);
 
                 assertThat(logs.getFirst().getFormattedMessage())
-                    .isEqualTo("hyoi [telegram-starter] URI-кнопки с текстом text успешно отправлены");
+                    .isEqualTo("hyoi [telegram-starter] URL-кнопки с текстом text успешно отправлены");
             });
     }
 

@@ -44,9 +44,9 @@ public class TelegramButtonClient {
 
         return Mono.fromCallable(() -> bot.execute(sendMessage))
             .thenReturn(text)
-            .doOnSuccess(_ -> LOGGER.info("hyoi [telegram-starter] URI-кнопки с текстом {} успешно отправлены", text))
+            .doOnSuccess(_ -> LOGGER.info("hyoi [telegram-starter] URL-кнопки с текстом {} успешно отправлены", text))
             .onErrorResume(throwable -> {
-                LOGGER.error("eexp [telegram-starter] Произошла ошибка при отправке URI-кнопок с текстом {}", text);
+                LOGGER.error("eexp [telegram-starter] Произошла ошибка при отправке URL-кнопок с текстом {}", text);
                 return Mono.error(new SendUrlButtonsException(throwable));
             })
             .subscribeOn(Schedulers.boundedElastic());
