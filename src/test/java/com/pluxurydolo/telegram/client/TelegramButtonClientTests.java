@@ -2,9 +2,12 @@ package com.pluxurydolo.telegram.client;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.response.SendResponse;
-import com.pluxurydolo.telegram.dto.request.ButtonRequest;
-import com.pluxurydolo.telegram.dto.request.SendButtonsRequest;
-import com.pluxurydolo.telegram.exception.handler.SendButtonsException;
+import com.pluxurydolo.telegram.dto.request.SendCallbackButtonsRequest;
+import com.pluxurydolo.telegram.dto.request.SendUrlButtonsRequest;
+import com.pluxurydolo.telegram.dto.request.button.CallbackButton;
+import com.pluxurydolo.telegram.dto.request.button.UrlButton;
+import com.pluxurydolo.telegram.exception.SendCallbackButtonsException;
+import com.pluxurydolo.telegram.exception.SendUrlButtonsException;
 import com.pluxurydolo.telegram.properties.TelegramFilterProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,11 +46,11 @@ class TelegramButtonClientTests {
     }
 
     @Test
-    void testSendButtons() {
+    void testSendUrlButtons() {
         when(telegramBot.execute(any()))
             .thenReturn(sendResponse);
 
-        Mono<String> result = telegramButtonClient.sendButtons(sendButtonsRequest(telegramBot));
+        Mono<String> result = telegramButtonClient.sendUrlButtons(sendUrlButtonsRequest(telegramBot));
 
         create(result)
             .expectNext("text")
@@ -55,19 +58,48 @@ class TelegramButtonClientTests {
     }
 
     @Test
-    void testSendButtonsWhenExceptionOccurred() {
+    void testSendUrlButtonsWhenExceptionOccurred() {
         doThrow(RuntimeException.class)
             .when(telegramBot).execute(any());
 
-        Mono<String> result = telegramButtonClient.sendButtons(sendButtonsRequest(telegramBot));
+        Mono<String> result = telegramButtonClient.sendUrlButtons(sendUrlButtonsRequest(telegramBot));
 
         create(result)
-            .verifyErrorMatches(throwable -> throwable.getClass().equals(SendButtonsException.class));
+            .verifyErrorMatches(throwable -> throwable.getClass().equals(SendUrlButtonsException.class));
     }
 
-    private static SendButtonsRequest sendButtonsRequest(TelegramBot telegramBot) {
-        ButtonRequest buttonRequest = new ButtonRequest("text", "url");
-        List<ButtonRequest> buttons = List.of(buttonRequest);
-        return new SendButtonsRequest("text", telegramBot, buttons);
+    @Test
+    void testSendCallbackButtons() {
+        when(telegramBot.execute(any()))
+            .thenReturn(sendResponse);
+
+        Mono<String> result = telegramButtonClient.sendCallbackButtons(sendCallbackButtonsRequest(telegramBot));
+
+        create(result)
+            .expectNext("text")
+            .verifyComplete();
+    }
+
+    @Test
+    void testSendCallbackButtonsWhenExceptionOccurred() {
+        doThrow(RuntimeException.class)
+            .when(telegramBot).execute(any());
+
+        Mono<String> result = telegramButtonClient.sendCallbackButtons(sendCallbackButtonsRequest(telegramBot));
+
+        create(result)
+            .verifyErrorMatches(throwable -> throwable.getClass().equals(SendCallbackButtonsException.class));
+    }
+
+    private static SendUrlButtonsRequest sendUrlButtonsRequest(TelegramBot telegramBot) {
+        UrlButton urlButton = new UrlButton("text", "url");
+        List<UrlButton> buttons = List.of(urlButton);
+        return new SendUrlButtonsRequest("text", telegramBot, buttons);
+    }
+
+    private static SendCallbackButtonsRequest sendCallbackButtonsRequest(TelegramBot telegramBot) {
+        CallbackButton callbackButton = new CallbackButton("text", "callbackData");
+        List<CallbackButton> buttons = List.of(callbackButton);
+        return new SendCallbackButtonsRequest("text", telegramBot, buttons);
     }
 }

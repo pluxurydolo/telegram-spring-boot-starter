@@ -7,8 +7,10 @@ import ch.qos.logback.core.spi.AppenderAttachable;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.response.SendResponse;
 import com.pluxurydolo.telegram.base.AbstractClientIntegrationTests;
-import com.pluxurydolo.telegram.dto.request.ButtonRequest;
-import com.pluxurydolo.telegram.dto.request.SendButtonsRequest;
+import com.pluxurydolo.telegram.dto.request.SendCallbackButtonsRequest;
+import com.pluxurydolo.telegram.dto.request.SendUrlButtonsRequest;
+import com.pluxurydolo.telegram.dto.request.button.CallbackButton;
+import com.pluxurydolo.telegram.dto.request.button.UrlButton;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,10 +32,10 @@ class TelegramButtonClientIntegrationTests extends AbstractClientIntegrationTest
     private TelegramButtonClient telegramButtonClient;
 
     @Test
-    void testSendButtons() {
+    void testSendUrlButtons() {
         List<ILoggingEvent> logs = listAppender().list;
 
-        telegramButtonClient.sendButtons(sendButtonsRequest())
+        telegramButtonClient.sendUrlButtons(sendUrlButtonsRequest())
             .subscribe();
 
         await().atMost(Duration.ofSeconds(5))
@@ -42,7 +44,24 @@ class TelegramButtonClientIntegrationTests extends AbstractClientIntegrationTest
                     .hasSize(1);
 
                 assertThat(logs.getFirst().getFormattedMessage())
-                    .isEqualTo("hyoi [telegram-starter] Кнопки с текстом text успешно отправлены");
+                    .isEqualTo("hyoi [telegram-starter] URI-кнопки с текстом text успешно отправлены");
+            });
+    }
+
+    @Test
+    void testSendCallbackButtons() {
+        List<ILoggingEvent> logs = listAppender().list;
+
+        telegramButtonClient.sendCallbackButtons(sendCallbackButtonsRequest())
+            .subscribe();
+
+        await().atMost(Duration.ofSeconds(5))
+            .untilAsserted(() -> {
+                assertThat(logs)
+                    .hasSize(1);
+
+                assertThat(logs.getFirst().getFormattedMessage())
+                    .isEqualTo("hecm [telegram-starter] Callback-кнопки с текстом text успешно отправлены");
             });
     }
 
@@ -53,18 +72,33 @@ class TelegramButtonClientIntegrationTests extends AbstractClientIntegrationTest
         return listAppender;
     }
 
-    private static SendButtonsRequest sendButtonsRequest() {
+    private static SendUrlButtonsRequest sendUrlButtonsRequest() {
         TelegramBot telegramBot = mock(TelegramBot.class);
         SendResponse sendResponse = mock(SendResponse.class);
 
         when(telegramBot.execute(any()))
             .thenReturn(sendResponse);
 
-        return new SendButtonsRequest("text", telegramBot, buttons());
+        return new SendUrlButtonsRequest("text", telegramBot, urlButtons());
     }
 
-    private static List<ButtonRequest> buttons() {
-        ButtonRequest buttonRequest = new ButtonRequest("text", "url");
-        return List.of(buttonRequest);
+    private static SendCallbackButtonsRequest sendCallbackButtonsRequest() {
+        TelegramBot telegramBot = mock(TelegramBot.class);
+        SendResponse sendResponse = mock(SendResponse.class);
+
+        when(telegramBot.execute(any()))
+            .thenReturn(sendResponse);
+
+        return new SendCallbackButtonsRequest("text", telegramBot, callbackButtons());
+    }
+
+    private static List<UrlButton> urlButtons() {
+        UrlButton urlButton = new UrlButton("text", "url");
+        return List.of(urlButton);
+    }
+
+    private static List<CallbackButton> callbackButtons() {
+        CallbackButton callbackButton = new CallbackButton("text", "callbackData");
+        return List.of(callbackButton);
     }
 }

@@ -5,6 +5,8 @@ import com.pluxurydolo.telegram.client.TelegramTextClient;
 import com.pluxurydolo.telegram.dto.UpdateType;
 import com.pluxurydolo.telegram.ratelimiter.PerUserRateLimiter;
 
+import java.util.Optional;
+
 import static com.pluxurydolo.telegram.dto.UpdateType.PIC;
 
 public abstract class AbstractPicHandler extends AbstractMediaHandler {
@@ -19,6 +21,8 @@ public abstract class AbstractPicHandler extends AbstractMediaHandler {
 
     @Override
     public boolean condition(Update update) {
-        return update.message().photo() != null;
+        return Optional.ofNullable(update.message())
+            .map(message -> message.photo() != null)
+            .orElse(false);
     }
 }

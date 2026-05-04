@@ -1,5 +1,6 @@
 package com.pluxurydolo.telegram.handler.text;
 
+import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pluxurydolo.telegram.client.TelegramTextClient;
 import com.pluxurydolo.telegram.dto.UpdateType;
@@ -22,9 +23,9 @@ public abstract class AbstractTextHandler extends AbstractUpdateHandler {
 
     @Override
     public boolean condition(Update update) {
-        Optional<String> text = Optional.ofNullable(update.message().text());
-
-        return text.map(it -> !it.startsWith("/"))
+        return Optional.ofNullable(update.message())
+            .map(Message::text)
+            .map(text -> !text.startsWith("/"))
             .orElse(false);
     }
 }

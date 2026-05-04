@@ -23,9 +23,10 @@ public class TelegramUpdateConfiguration {
     @ConditionalOnMissingBean
     public TelegramUpdatesListener telegramUpdatesListener(
         FilterExecutor filterExecutor,
-        List<AbstractHandlerExecutor> executors
+        List<AbstractHandlerExecutor> executors,
+        TelegramUpdateParser telegramUpdateParser
     ) {
-        return new TelegramUpdatesListener(filterExecutor, executors);
+        return new TelegramUpdatesListener(filterExecutor, executors, telegramUpdateParser);
     }
 
     @Bean

@@ -1,12 +1,13 @@
 package com.pluxurydolo.telegram.dto.request;
 
 import com.pengrad.telegrambot.TelegramBot;
+import com.pluxurydolo.telegram.dto.request.button.CallbackButton;
 
 import java.util.List;
 
-public record SendButtonsRequest(
+public record SendCallbackButtonsRequest(
     String text,
     TelegramBot bot,
-    List<ButtonRequest> buttons
+    List<CallbackButton> buttons
 ) {
 }

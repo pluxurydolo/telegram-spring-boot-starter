@@ -5,6 +5,8 @@ import com.pluxurydolo.telegram.client.TelegramTextClient;
 import com.pluxurydolo.telegram.dto.UpdateType;
 import com.pluxurydolo.telegram.ratelimiter.PerUserRateLimiter;
 
+import java.util.Optional;
+
 import static com.pluxurydolo.telegram.dto.UpdateType.VIDEO;
 
 public abstract class AbstractVideoHandler extends AbstractMediaHandler {
@@ -19,6 +21,8 @@ public abstract class AbstractVideoHandler extends AbstractMediaHandler {
 
     @Override
     public boolean condition(Update update) {
-        return update.message().video() != null;
+        return Optional.ofNullable(update.message())
+            .map(message -> message.video() != null)
+            .orElse(false);
     }
 }

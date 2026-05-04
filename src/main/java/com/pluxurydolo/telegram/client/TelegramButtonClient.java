@@ -4,9 +4,12 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.pluxurydolo.telegram.dto.request.ButtonRequest;
-import com.pluxurydolo.telegram.dto.request.SendButtonsRequest;
-import com.pluxurydolo.telegram.exception.handler.SendButtonsException;
+import com.pluxurydolo.telegram.dto.request.SendCallbackButtonsRequest;
+import com.pluxurydolo.telegram.dto.request.button.CallbackButton;
+import com.pluxurydolo.telegram.dto.request.button.UrlButton;
+import com.pluxurydolo.telegram.dto.request.SendUrlButtonsRequest;
+import com.pluxurydolo.telegram.exception.SendCallbackButtonsException;
+import com.pluxurydolo.telegram.exception.SendUrlButtonsException;
 import com.pluxurydolo.telegram.properties.TelegramFilterProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,13 +25,13 @@ public class TelegramButtonClient {
         this.telegramFilterProperties = telegramFilterProperties;
     }
 
-    public Mono<String> sendButtons(SendButtonsRequest request) {
+    public Mono<String> sendUrlButtons(SendUrlButtonsRequest request) {
         String text = request.text();
         TelegramBot bot = request.bot();
 
         InlineKeyboardButton[][] buttons = request.buttons()
             .stream()
-            .map(TelegramButtonClient::buildButton)
+            .map(TelegramButtonClient::buildUrlButton)
             .map(button -> new InlineKeyboardButton[]{button})
             .toArray(InlineKeyboardButton[][]::new);
 
@@ -41,19 +44,54 @@ public class TelegramButtonClient {
 
         return Mono.fromCallable(() -> bot.execute(sendMessage))
             .thenReturn(text)
-            .doOnSuccess(_ -> LOGGER.info("hyoi [telegram-starter] Кнопки с текстом {} успешно отправлены", text))
+            .doOnSuccess(_ -> LOGGER.info("hyoi [telegram-starter] URI-кнопки с текстом {} успешно отправлены", text))
             .onErrorResume(throwable -> {
-                LOGGER.error("eexp [telegram-starter] Произошла ошибка при отправке кнопок с текстом {}", text);
-                return Mono.error(new SendButtonsException(throwable));
+                LOGGER.error("eexp [telegram-starter] Произошла ошибка при отправке URI-кнопок с текстом {}", text);
+                return Mono.error(new SendUrlButtonsException(throwable));
             })
             .subscribeOn(Schedulers.boundedElastic());
     }
 
-    private static InlineKeyboardButton buildButton(ButtonRequest request) {
+    public Mono<String> sendCallbackButtons(SendCallbackButtonsRequest request) {
+        String text = request.text();
+        TelegramBot bot = request.bot();
+
+        InlineKeyboardButton[][] buttons = request.buttons()
+            .stream()
+            .map(TelegramButtonClient::buildCallbackButton)
+            .map(button -> new InlineKeyboardButton[]{button})
+            .toArray(InlineKeyboardButton[][]::new);
+
+        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup(buttons);
+
+        long whitelistUserId = telegramFilterProperties.whitelistUserId();
+
+        SendMessage sendMessage = new SendMessage(whitelistUserId, text)
+            .replyMarkup(keyboard);
+
+        return Mono.fromCallable(() -> bot.execute(sendMessage))
+            .thenReturn(text)
+            .doOnSuccess(_ -> LOGGER.info("hecm [telegram-starter] Callback-кнопки с текстом {} успешно отправлены", text))
+            .onErrorResume(throwable -> {
+                LOGGER.error("bbbv [telegram-starter] Произошла ошибка при отправке callback-кнопок с текстом {}", text);
+                return Mono.error(new SendCallbackButtonsException(throwable));
+            })
+            .subscribeOn(Schedulers.boundedElastic());
+    }
+
+    private static InlineKeyboardButton buildUrlButton(UrlButton request) {
         String text = request.text();
         String url = request.url();
 
         return new InlineKeyboardButton(text)
             .url(url);
+    }
+
+    private static InlineKeyboardButton buildCallbackButton(CallbackButton request) {
+        String text = request.text();
+        String callbackData = request.callbackData();
+
+        return new InlineKeyboardButton(text)
+            .callbackData(callbackData);
     }
 }
