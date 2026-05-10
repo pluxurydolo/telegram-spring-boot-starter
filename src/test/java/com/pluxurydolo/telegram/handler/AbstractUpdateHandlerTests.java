@@ -23,7 +23,7 @@ class AbstractUpdateHandlerTests {
         when(PER_USER_RATE_LIMITER.withRateLimit(any(), any(), any()))
             .thenReturn(Mono.just(""));
 
-        Mono<String> result = updateHandler.handle(UPDATE);
+        Mono<String> result = UPDATE_HANDLER.handle(UPDATE);
 
         create(result)
             .expectNext("")
@@ -37,14 +37,14 @@ class AbstractUpdateHandlerTests {
         when(TELEGRAM_TEXT_CLIENT.sendText(any()))
             .thenReturn(Mono.just(1));
 
-        Mono<String> result = updateHandler.handle(UPDATE);
+        Mono<String> result = UPDATE_HANDLER.handle(UPDATE);
 
         create(result)
             .expectNext("")
             .verifyComplete();
     }
 
-    private AbstractUpdateHandler updateHandler = new AbstractUpdateHandler(
+    private static final AbstractUpdateHandler UPDATE_HANDLER = new AbstractUpdateHandler(
         TELEGRAM_TEXT_CLIENT,
         PER_USER_RATE_LIMITER
     ) {

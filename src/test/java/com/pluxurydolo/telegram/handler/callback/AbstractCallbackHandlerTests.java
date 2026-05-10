@@ -22,7 +22,7 @@ class AbstractCallbackHandlerTests {
 
     @Test
     void testUpdateType() {
-        UpdateType result = callbackHandler.updateType();
+        UpdateType result = CALLBACK_HANDLER.updateType();
 
         assertThat(result)
             .isEqualTo(CALLBACK);
@@ -33,7 +33,7 @@ class AbstractCallbackHandlerTests {
         when(UPDATE.callbackQuery())
             .thenReturn(CALLBACK_QUERY);
 
-        boolean result = callbackHandler.condition(UPDATE);
+        boolean result = CALLBACK_HANDLER.condition(UPDATE);
 
         assertThat(result)
             .isTrue();
@@ -44,19 +44,19 @@ class AbstractCallbackHandlerTests {
         when(UPDATE.callbackQuery())
             .thenReturn(null);
 
-        boolean result = callbackHandler.condition(UPDATE);
+        boolean result = CALLBACK_HANDLER.condition(UPDATE);
 
         assertThat(result)
             .isFalse();
     }
 
-    private AbstractCallbackHandler callbackHandler = new AbstractCallbackHandler(
+    private static final AbstractCallbackHandler CALLBACK_HANDLER = new AbstractCallbackHandler(
         TELEGRAM_TEXT_CLIENT,
         PER_USER_RATE_LIMITER
     ) {
 
         @Override
-        public Mono<String> doWork(Update u) {
+        public Mono<String> doWork(Update update) {
             return null;
         }
 

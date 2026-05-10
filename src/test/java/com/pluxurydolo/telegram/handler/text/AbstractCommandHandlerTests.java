@@ -22,7 +22,7 @@ class AbstractCommandHandlerTests {
 
     @Test
     void testUpdateType() {
-        UpdateType result = commandHandler.updateType();
+        UpdateType result = COMMAND_HANDLER.updateType();
 
         assertThat(result)
             .isEqualTo(COMMAND);
@@ -35,7 +35,7 @@ class AbstractCommandHandlerTests {
         when(MESSAGE.text())
             .thenReturn("/command1");
 
-        boolean result = commandHandler.condition(UPDATE);
+        boolean result = COMMAND_HANDLER.condition(UPDATE);
 
         assertThat(result)
             .isTrue();
@@ -46,7 +46,7 @@ class AbstractCommandHandlerTests {
         when(UPDATE.message())
             .thenReturn(null);
 
-        boolean result = commandHandler.condition(UPDATE);
+        boolean result = COMMAND_HANDLER.condition(UPDATE);
 
         assertThat(result)
             .isFalse();
@@ -59,13 +59,13 @@ class AbstractCommandHandlerTests {
         when(MESSAGE.text())
             .thenReturn("/idk");
 
-        boolean result = commandHandler.condition(UPDATE);
+        boolean result = COMMAND_HANDLER.condition(UPDATE);
 
         assertThat(result)
             .isFalse();
     }
 
-    private AbstractCommandHandler commandHandler = new AbstractCommandHandler(
+    private static final AbstractCommandHandler COMMAND_HANDLER = new AbstractCommandHandler(
         TELEGRAM_TEXT_CLIENT,
         PER_USER_RATE_LIMITER
     ) {

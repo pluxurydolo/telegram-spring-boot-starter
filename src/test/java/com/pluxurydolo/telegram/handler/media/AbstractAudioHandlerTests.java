@@ -24,7 +24,7 @@ class AbstractAudioHandlerTests {
 
     @Test
     void testUpdateType() {
-        UpdateType result = audioHandler.updateType();
+        UpdateType result = AUDIO_HANDLER.updateType();
 
         assertThat(result)
             .isEqualTo(AUDIO);
@@ -37,7 +37,7 @@ class AbstractAudioHandlerTests {
         when(MESSAGE.audio())
             .thenReturn(MOCK_AUDIO);
 
-        boolean result = audioHandler.condition(UPDATE);
+        boolean result = AUDIO_HANDLER.condition(UPDATE);
 
         assertThat(result)
             .isTrue();
@@ -48,7 +48,7 @@ class AbstractAudioHandlerTests {
         when(UPDATE.message())
             .thenReturn(null);
 
-        boolean result = audioHandler.condition(UPDATE);
+        boolean result = AUDIO_HANDLER.condition(UPDATE);
 
         assertThat(result)
             .isFalse();
@@ -61,19 +61,19 @@ class AbstractAudioHandlerTests {
         when(MESSAGE.audio())
             .thenReturn(null);
 
-        boolean result = audioHandler.condition(UPDATE);
+        boolean result = AUDIO_HANDLER.condition(UPDATE);
 
         assertThat(result)
             .isFalse();
     }
 
-    private AbstractAudioHandler audioHandler = new AbstractAudioHandler(
+    private static final AbstractAudioHandler AUDIO_HANDLER = new AbstractAudioHandler(
         TELEGRAM_TEXT_CLIENT,
         PER_USER_RATE_LIMITER
     ) {
 
         @Override
-        public Mono<String> doWork(Update u) {
+        public Mono<String> doWork(Update update) {
             return null;
         }
 

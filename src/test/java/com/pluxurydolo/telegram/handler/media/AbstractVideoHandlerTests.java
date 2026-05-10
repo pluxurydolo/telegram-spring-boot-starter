@@ -24,7 +24,7 @@ class AbstractVideoHandlerTests {
 
     @Test
     void testUpdateType() {
-        UpdateType result = videoHandler.updateType();
+        UpdateType result = VIDEO_HANDLER.updateType();
 
         assertThat(result)
             .isEqualTo(VIDEO);
@@ -37,7 +37,7 @@ class AbstractVideoHandlerTests {
         when(MESSAGE.video())
             .thenReturn(MOCK_VIDEO);
 
-        boolean result = videoHandler.condition(UPDATE);
+        boolean result = VIDEO_HANDLER.condition(UPDATE);
 
         assertThat(result)
             .isTrue();
@@ -48,7 +48,7 @@ class AbstractVideoHandlerTests {
         when(UPDATE.message())
             .thenReturn(null);
 
-        boolean result = videoHandler.condition(UPDATE);
+        boolean result = VIDEO_HANDLER.condition(UPDATE);
 
         assertThat(result)
             .isFalse();
@@ -61,19 +61,19 @@ class AbstractVideoHandlerTests {
         when(MESSAGE.video())
             .thenReturn(null);
 
-        boolean result = videoHandler.condition(UPDATE);
+        boolean result = VIDEO_HANDLER.condition(UPDATE);
 
         assertThat(result)
             .isFalse();
     }
 
-    private AbstractVideoHandler videoHandler = new AbstractVideoHandler(
+    private static final AbstractVideoHandler VIDEO_HANDLER = new AbstractVideoHandler(
         TELEGRAM_TEXT_CLIENT,
         PER_USER_RATE_LIMITER
     ) {
 
         @Override
-        public Mono<String> doWork(Update u) {
+        public Mono<String> doWork(Update update) {
             return null;
         }
 

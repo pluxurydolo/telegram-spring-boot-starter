@@ -22,7 +22,7 @@ class AbstractTextHandlerTests {
 
     @Test
     void testUpdateType() {
-        UpdateType result = textHandler.updateType();
+        UpdateType result = TEXT_HANDLER.updateType();
 
         assertThat(result)
             .isEqualTo(TEXT);
@@ -35,7 +35,7 @@ class AbstractTextHandlerTests {
         when(MESSAGE.text())
             .thenReturn("text");
 
-        boolean result = textHandler.condition(UPDATE);
+        boolean result = TEXT_HANDLER.condition(UPDATE);
 
         assertThat(result)
             .isTrue();
@@ -46,7 +46,7 @@ class AbstractTextHandlerTests {
         when(UPDATE.message())
             .thenReturn(null);
 
-        boolean result = textHandler.condition(UPDATE);
+        boolean result = TEXT_HANDLER.condition(UPDATE);
 
         assertThat(result)
             .isFalse();
@@ -59,19 +59,19 @@ class AbstractTextHandlerTests {
         when(MESSAGE.text())
             .thenReturn("/text");
 
-        boolean result = textHandler.condition(UPDATE);
+        boolean result = TEXT_HANDLER.condition(UPDATE);
 
         assertThat(result)
             .isFalse();
     }
 
-    private AbstractTextHandler textHandler = new AbstractTextHandler(
+    private static final AbstractTextHandler TEXT_HANDLER = new AbstractTextHandler(
         TELEGRAM_TEXT_CLIENT,
         PER_USER_RATE_LIMITER
     ) {
 
         @Override
-        public Mono<String> doWork(Update u) {
+        public Mono<String> doWork(Update update) {
             return null;
         }
 

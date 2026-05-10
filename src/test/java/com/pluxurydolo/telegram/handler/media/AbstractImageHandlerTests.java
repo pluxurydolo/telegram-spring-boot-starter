@@ -24,7 +24,7 @@ class AbstractImageHandlerTests {
 
     @Test
     void testUpdateType() {
-        UpdateType result = imageHandler.updateType();
+        UpdateType result = IMAGE_HANDLER.updateType();
 
         assertThat(result)
             .isEqualTo(IMAGE);
@@ -37,7 +37,7 @@ class AbstractImageHandlerTests {
         when(MESSAGE.photo())
             .thenReturn(photoSizes());
 
-        boolean result = imageHandler.condition(UPDATE);
+        boolean result = IMAGE_HANDLER.condition(UPDATE);
 
         assertThat(result)
             .isTrue();
@@ -48,7 +48,7 @@ class AbstractImageHandlerTests {
         when(UPDATE.message())
             .thenReturn(null);
 
-        boolean result = imageHandler.condition(UPDATE);
+        boolean result = IMAGE_HANDLER.condition(UPDATE);
 
         assertThat(result)
             .isFalse();
@@ -61,19 +61,19 @@ class AbstractImageHandlerTests {
         when(MESSAGE.photo())
             .thenReturn(null);
 
-        boolean result = imageHandler.condition(UPDATE);
+        boolean result = IMAGE_HANDLER.condition(UPDATE);
 
         assertThat(result)
             .isFalse();
     }
 
-    private AbstractImageHandler imageHandler = new AbstractImageHandler(
+    private static final AbstractImageHandler IMAGE_HANDLER = new AbstractImageHandler(
         TELEGRAM_TEXT_CLIENT,
         PER_USER_RATE_LIMITER
     ) {
 
         @Override
-        public Mono<String> doWork(Update u) {
+        public Mono<String> doWork(Update update) {
             return null;
         }
 
