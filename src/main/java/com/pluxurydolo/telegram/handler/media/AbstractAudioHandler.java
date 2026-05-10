@@ -8,22 +8,22 @@ import com.pluxurydolo.telegram.ratelimiter.PerUserRateLimiter;
 
 import java.util.Optional;
 
-import static com.pluxurydolo.telegram.dto.UpdateType.PIC;
+import static com.pluxurydolo.telegram.dto.UpdateType.AUDIO;
 
-public abstract class AbstractPicHandler extends AbstractUpdateHandler {
-    protected AbstractPicHandler(TelegramTextClient telegramTextClient, PerUserRateLimiter perUserRateLimiter) {
+public abstract class AbstractAudioHandler extends AbstractUpdateHandler {
+    protected AbstractAudioHandler(TelegramTextClient telegramTextClient, PerUserRateLimiter perUserRateLimiter) {
         super(telegramTextClient, perUserRateLimiter);
     }
 
     @Override
     public UpdateType updateType() {
-        return PIC;
+        return AUDIO;
     }
 
     @Override
     public boolean condition(Update update) {
         return Optional.ofNullable(update.message())
-            .map(message -> message.photo() != null)
+            .map(message -> message.audio() != null)
             .orElse(false);
     }
 }

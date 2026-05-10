@@ -4,6 +4,7 @@ public enum UpdateType {
     COMMAND,
     TEXT,
     CALLBACK,
+    AUDIO,
     PIC,
     VIDEO
 }
