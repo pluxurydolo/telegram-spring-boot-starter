@@ -8,16 +8,16 @@ import com.pluxurydolo.telegram.ratelimiter.PerUserRateLimiter;
 
 import java.util.Optional;
 
-import static com.pluxurydolo.telegram.dto.UpdateType.PIC;
+import static com.pluxurydolo.telegram.dto.UpdateType.IMAGE;
 
-public abstract class AbstractPicHandler extends AbstractUpdateHandler {
-    protected AbstractPicHandler(TelegramTextClient telegramTextClient, PerUserRateLimiter perUserRateLimiter) {
+public abstract class AbstractImageHandler extends AbstractUpdateHandler {
+    protected AbstractImageHandler(TelegramTextClient telegramTextClient, PerUserRateLimiter perUserRateLimiter) {
         super(telegramTextClient, perUserRateLimiter);
     }
 
     @Override
     public UpdateType updateType() {
-        return PIC;
+        return IMAGE;
     }
 
     @Override

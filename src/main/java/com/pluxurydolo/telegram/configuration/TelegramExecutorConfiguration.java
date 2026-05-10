@@ -4,11 +4,11 @@ import com.pluxurydolo.telegram.handler.callback.AbstractCallbackHandler;
 import com.pluxurydolo.telegram.handler.executor.AudioHandlerExecutor;
 import com.pluxurydolo.telegram.handler.executor.CallbackHandlerExecutor;
 import com.pluxurydolo.telegram.handler.executor.CommandHandlerExecutor;
-import com.pluxurydolo.telegram.handler.executor.PicHandlerExecutor;
+import com.pluxurydolo.telegram.handler.executor.ImageHandlerExecutor;
 import com.pluxurydolo.telegram.handler.executor.TextHandlerExecutor;
 import com.pluxurydolo.telegram.handler.executor.VideoHandlerExecutor;
 import com.pluxurydolo.telegram.handler.media.AbstractAudioHandler;
-import com.pluxurydolo.telegram.handler.media.AbstractPicHandler;
+import com.pluxurydolo.telegram.handler.media.AbstractImageHandler;
 import com.pluxurydolo.telegram.handler.media.AbstractVideoHandler;
 import com.pluxurydolo.telegram.handler.text.AbstractCommandHandler;
 import com.pluxurydolo.telegram.handler.text.AbstractTextHandler;
@@ -41,8 +41,8 @@ public class TelegramExecutorConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public PicHandlerExecutor picHandlerExecutor(List<AbstractPicHandler> handlers) {
-        return new PicHandlerExecutor(handlers);
+    public ImageHandlerExecutor imageHandlerExecutor(List<AbstractImageHandler> handlers) {
+        return new ImageHandlerExecutor(handlers);
     }
 
     @Bean

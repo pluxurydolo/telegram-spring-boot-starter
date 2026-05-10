@@ -5,6 +5,6 @@ public enum UpdateType {
     TEXT,
     CALLBACK,
     AUDIO,
-    PIC,
+    IMAGE,
     VIDEO
 }
