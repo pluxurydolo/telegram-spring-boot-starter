@@ -6,6 +6,7 @@ import com.pluxurydolo.telegram.ratelimiter.handler.RateLimitExceededHandler;
 import io.github.resilience4j.ratelimiter.RateLimiter;
 import io.github.resilience4j.ratelimiter.RateLimiterConfig;
 import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import io.github.resilience4j.reactor.ratelimiter.operator.RateLimiterOperator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,7 @@ public class PerUserRateLimiter {
             .id();
 
         return operation.transformDeferred(mono -> applyRateLimiter(userId, mono))
-            .onErrorResume(_ -> {
+            .onErrorResume(RequestNotPermitted.class, _ -> {
                 LOGGER.error("iorw [telegram-starter] Превышен лимит запросов для пользователя: {}", userId);
                 return rateLimitExceededHandler.handle(telegramBot);
             });

@@ -8,6 +8,7 @@ import com.pluxurydolo.telegram.ratelimiter.handler.RateLimitExceededHandler;
 import io.github.resilience4j.ratelimiter.RateLimiter;
 import io.github.resilience4j.ratelimiter.RateLimiterConfig;
 import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -71,7 +72,7 @@ class PerUserRateLimiterTests {
 
     @Test
     void testWithRateLimitWhenRateLimitExceeded() {
-        doThrow(RuntimeException.class)
+        doThrow(RequestNotPermitted.class)
             .when(rateLimiterRegistry).rateLimiter(anyString(), any(RateLimiterConfig.class));
         when(update.message())
             .thenReturn(message);
@@ -87,5 +88,22 @@ class PerUserRateLimiterTests {
         create(result)
             .expectNext("")
             .verifyComplete();
+    }
+
+    @Test
+    void testWithRateLimitWhenOtherExceptionOccurred() {
+        doThrow(RuntimeException.class)
+            .when(rateLimiterRegistry).rateLimiter(anyString(), any(RateLimiterConfig.class));
+        when(update.message())
+            .thenReturn(message);
+        when(message.from())
+            .thenReturn(user);
+        when(user.id())
+            .thenReturn(1L);
+
+        Mono<String> result = perUserRateLimiter.withRateLimit(update, telegramBot, Mono.just("operation"));
+
+        create(result)
+            .verifyErrorMatches(throwable -> throwable.getClass().equals(RuntimeException.class));
     }
 }
