@@ -7,11 +7,7 @@ import java.time.Duration;
 
 @ConfigurationProperties(prefix = "telegram.rate-limit")
 public record TelegramRateLimitProperties(
-
-    @Name("threshold")
-    int threshold,
-
-    @Name("refresh-period")
-    Duration refreshPeriod
+    @Name("threshold") int threshold,
+    @Name("refresh-period") Duration refreshPeriod
 ) {
 }
